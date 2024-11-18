@@ -39,7 +39,7 @@ export default function Home() {
 
           <div className="mt-4 flex flex-col gap-4 bg-white shadow-lg border border-neutral-200 rounded-lg p-6">
             <div className="flex items-center gap-4">
-              <img src="/ctfguide.png" alt="ctfguide" className="w-20 rounded-lg" />
+              <img src="https://avatars.githubusercontent.com/u/23617187?v=4" alt="ctfguide" className="w-20 rounded-lg" />
               <div>
               <h2 className="text-2xl font-bold">Founder & CEO</h2>
 
