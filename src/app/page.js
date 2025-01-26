@@ -1,17 +1,20 @@
+"use client"
 import Image from "next/image";
+import AnimatedText from '@/components/AnimatedText'
+import FadeIn from '@/components/FadeIn'
 
 export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] max-w-screen-lg mx-auto items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
        <nav className="w-full text-black   p-4">
       <div className="max-w-screen-lg mx-auto flex justify-between items-center">
-        <div className="text-black text-2xl font-bold"></div>
+        <div className="text-white text-2xl font-bold"></div>
         <div className="flex gap-4">
-            <a className="text-black hover:underline" href="/">Home</a>
+            <a className="text-white hover:underline" href="/">Home</a>
  
-            <a className="text-black hover:underline" href="/work-experience">Work Experience</a>
+            <a className="text-white hover:underline" href="/work-experience">Work Experience</a>
         
-            <a className="text-black hover:underline" href="/projects">Projects</a>
+            <a className="text-white hover:underline" href="/projects">Projects</a>
 
         </div>
       </div>
@@ -22,8 +25,13 @@ export default function Home() {
       
 
         <div>
-        <h1 className="text-3xl font-bold">Pranav Ramesh</h1>
+        <AnimatedText delay={0.2}>
+          <h1 className="text-4xl font-bold mb-4">
+            Hi, I'm Pranav Ramesh
+          </h1>
+        </AnimatedText>
       
+        <FadeIn delay={0.4}>
         <p className="text-xl mt-2">
         Hi, I'm Pranav. I'm the founder of <a className="underline font-bold" href="https://www.ctfguide.com/" target="_blank" rel="noopener noreferrer">CTFGuide</a> and a junior at Penn State.
         <br></br><br></br>
@@ -31,6 +39,11 @@ export default function Home() {
            <br></br><br></br>
            I recently won the "Best DEI Hack sponsored by Fidelity Investments" at PennApps XXV. You can learn more about the project that won <a  className="underline font-bold" href="https://devpost.com/software/sera-2svk5u" target="_blank" rel="noopener noreferrer">here</a>.
         </p>
+
+        
+        </FadeIn>
+
+      
 
 
          
@@ -108,12 +121,12 @@ export default function Home() {
       
       </div>
       </div>
-      <div className="hidden sm:block ">
+      <div className="hidden sm:block mt-10">
       <img src="/me.png" alt="pranav" className="w-2/3 rounded-lg mx-auto" />
    
       <footer className="row-start-3 mt-4 flex gap-6 flex-wrap items-center justify-center">
         <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          className="flex hidden items-center gap-2 hover:underline hover:underline-offset-4"
           href="/resume.pdf"
           target="_blank"
           rel="noopener noreferrer"
