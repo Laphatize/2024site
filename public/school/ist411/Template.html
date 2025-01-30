@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkbox Selection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h2>Checkbox Selection</h2>
+    <label>
+        <input type="checkbox" id="selectAll"> Select All
+    </label>
+    <br>
+    <label>
+        <input type="checkbox" class="option"> Option 1
+    </label>
+    <br>
+    <label>
+        <input type="checkbox" class="option"> Option 2
+    </label>
+    <br>
+    <label>
+        <input type="checkbox" class="option"> Option 3
+    </label>
+    <br>
+    <label>
+        <input type="checkbox" class="option"> Option 4
+    </label>
+    <br>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const selectAll = document.getElementById("selectAll");
+            const options = document.querySelectorAll(".option");
+
+            selectAll.addEventListener("change", function () {
+                options.forEach(option => option.checked = selectAll.checked);
+            });
+
+            options.forEach(option => {
+                option.addEventListener("change", function () {
+                    const allChecked = Array.from(options).every(option => option.checked);
+                    const someChecked = Array.from(options).some(option => option.checked);
+                    selectAll.checked = allChecked;
+                    selectAll.indeterminate = !allChecked && someChecked;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
