@@ -9,8 +9,10 @@
             font-family: Arial, sans-serif;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js"></script>
 </head>
 <body>
+    <button id="openEditor">Open Code in Editor</button>
     <h2>Checkbox Selection</h2>
     <label>
         <input type="checkbox" id="selectAll"> Select All
@@ -32,11 +34,14 @@
         <input type="checkbox" class="option"> Option 4
     </label>
     <br>
-
+    <div id="editorContainer" style="width: 80%; height: 400px; display: none;"></div>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const selectAll = document.getElementById("selectAll");
             const options = document.querySelectorAll(".option");
+            const openEditor = document.getElementById("openEditor");
+            const editorContainer = document.getElementById("editorContainer");
+            let editor;
 
             selectAll.addEventListener("change", function () {
                 options.forEach(option => option.checked = selectAll.checked);
@@ -48,6 +53,20 @@
                     const someChecked = Array.from(options).some(option => option.checked);
                     selectAll.checked = allChecked;
                     selectAll.indeterminate = !allChecked && someChecked;
+                });
+            });
+
+            openEditor.addEventListener("click", function () {
+                editorContainer.style.display = "block";
+                require.config({ paths: { vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs" } });
+                require(["vs/editor/editor.main"], function () {
+                    if (!editor) {
+                        editor = monaco.editor.create(editorContainer, {
+                            value: document.documentElement.outerHTML,
+                            language: "html",
+                            theme: "vs-dark"
+                        });
+                    }
                 });
             });
         });
