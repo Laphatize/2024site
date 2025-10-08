@@ -133,7 +133,7 @@ export default function Home() {
       <main className="max-w-screen-lg mx-auto p-8 flex flex-col gap-8">
         <div>
           <p className="text-xl mt-2">
-            Hi, I'm Pranav. I'm the founder of <a className="underline font-bold" href="https://www.ctfguide.com/" target="_blank" rel="noopener noreferrer">CTFGuide</a>, the founder of <a className="underline font-bold" href="https://vyvern.com/" target="_blank" rel="noopener noreferrer">Vyvern</a>, and a senior at Penn State.
+            Hi, I'm Pranav. I'm the founder of <a className="underline font-bold" href="https://ctfguide.com/" target="_blank" rel="noopener noreferrer">CTFGuide</a>, the founder of <a className="underline font-bold" href="https://vyvern.com/" target="_blank" rel="noopener noreferrer">Vyvern</a>, and a senior at Penn State.
             <br/><br/>
             I love attending hackathons and learning new technologies. Some of my interests include cybersecurity, AI, and web development.
             <br/><br/>
