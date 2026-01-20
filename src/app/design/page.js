@@ -1,37 +1,23 @@
 "use client";
 import Link from "next/link";
 
-export default function Projects() {
-  const projects = [
+export default function Design() {
+  const designPortfolio = [
     {
-      title: "Sera",
-      description: "An AI-powered finance app with personalized financial guidance, OCR receipt scanning, transaction management, and budgeting tools.",
-      date: "09/20/24 - 09/22/24",
-      badge: "PennApps XXV Hackathon Winner",
-      skills: ["Next.js", "React.js", "Node", "AI", "TailwindCSS", "Figma"],
-      links: { project: "https://sera.pranavramesh.dev", github: "https://github.com/sera-financial" }
-    },
-    {
-      title: "InternHunt",
-      description: "A platform that helps students find software engineering and tech internships. Features automated job discovery and application tracking.",
+      title: "Brandywine Launchbox Workspace Dashboard",
+      focus: "Workspace management and startup collaboration tools",
       date: "2024",
-      skills: ["Next.js", "React.js", "Node", "TailwindCSS"],
-      links: { project: "https://internhunt.pranavramesh.dev", github: "https://github.com/Laphatize/internhunt" }
+      role: "Product Design",
+      tools: ["Figma", "Design Systems"],
+      figma: "https://www.figma.com/design/fBmasoYMswElMfG5VAkjXH/Brandywine-Launchbox?node-id=0-1&t=w3DNFaLubHj5yU11-1"
     },
     {
-      title: "Comcast Inquire",
-      description: "A chat interface to help with the sales and marketing of Comcast products. This project won Comcast's OpenAI Track at the Philly Codefest 2024.",
-      date: "04/24/24 - 09/26/24",
-      badge: "Philly Codefest Winner",
-      skills: ["Next.js", "React.js", "Node", "AI", "TailwindCSS", "Figma"],
-      links: { project: "https://comcast-inquire.vercel.app/", github: "https://github.com/laphatize/comcast-inquire" }
-    },
-    {
-      title: "Docket",
-      description: "Manage fleets of containers across your own infrastructure. Built for CTFGuide's virtual terminal service.",
-      date: "05/20/24 - Present",
-      skills: ["Node.js", "Express", "Docker", "Tensorflow"],
-      links: { github: "https://github.com/ctfguide-tech/docket" }
+      title: "Impactra",
+      focus: "Gamified volunteering app with rewards and challenges",
+      date: "2024",
+      role: "Product Design",
+      tools: ["Figma", "Prototyping"],
+      figma: "https://www.figma.com/proto/ilYzNaK9HZ0lBXBowbNpin/Impactra-Prototype?node-id=117-194&t=YLKc7pqEwxRQExIW-1"
     }
   ];
 
@@ -53,11 +39,11 @@ export default function Projects() {
             key={item.id}
             href={item.href}
             className={`group flex items-center gap-3 py-2 text-sm transition-all duration-300 ${
-              item.id === "projects" ? "text-white" : "text-neutral-500 hover:text-neutral-300"
+              item.id === "design" ? "text-white" : "text-neutral-500 hover:text-neutral-300"
             }`}
           >
             <span className={`h-px transition-all duration-300 ${
-              item.id === "projects" ? "w-12 bg-white" : "w-6 bg-neutral-600 group-hover:w-8 group-hover:bg-neutral-400"
+              item.id === "design" ? "w-12 bg-white" : "w-6 bg-neutral-600 group-hover:w-8 group-hover:bg-neutral-400"
             }`} />
             <span className="font-light tracking-wide">{item.label}</span>
           </Link>
@@ -71,7 +57,7 @@ export default function Projects() {
             key={item.id}
             href={item.href}
             className={`px-4 py-2 text-sm rounded-full transition-all duration-300 ${
-              item.id === "projects"
+              item.id === "design"
                 ? "bg-white text-neutral-900 font-medium"
                 : "text-neutral-400 hover:text-white"
             }`}
@@ -82,7 +68,7 @@ export default function Projects() {
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-2xl mx-auto px-6 py-20 lg:py-32 lg:ml-48">
+      <main className="max-w-5xl mx-auto px-6 py-20 lg:py-32 lg:ml-48">
         
         {/* Header */}
         <header className="mb-16">
@@ -119,42 +105,39 @@ export default function Projects() {
           </div>
         </header>
 
-        {/* Projects Section */}
+        {/* Design Section */}
         <section>
-          <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-wider mb-8">Projects</h2>
-          <div className="space-y-6">
-            {projects.map((project, index) => (
-              <article key={index} className="group p-5 rounded-xl bg-neutral-900/30 border border-neutral-800/30 hover:border-neutral-700/50 hover:bg-neutral-900/50 transition-all duration-300">
-                <div className="flex items-start justify-between gap-4 mb-3">
-                  <div>
-                    <h3 className="text-white font-medium">{project.title}</h3>
-                    {project.badge && (
-                      <span className="inline-block mt-1 text-xs text-amber-500 font-medium">{project.badge}</span>
-                    )}
+          <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-wider mb-8">Design Portfolio</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {designPortfolio.map((item, idx) => (
+              <article key={item.title} className=" group rounded-xl bg-neutral-900/30 border border-neutral-800/30 hover:border-neutral-700/50 hover:bg-neutral-900/50 transition-all duration-300 overflow-hidden">
+                {/* Figma Embed Preview */}
+                <div className="aspect-[16/10] bg-neutral-900 relative">
+                  <iframe
+                    src={`https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(item.figma)}`}
+                    className="absolute inset-0 w-full h-full border-0"
+                    allowFullScreen
+                  />
+                </div>
+                {/* Info */}
+                <div className="p-5">
+                  <h3 className="text-white font-medium">{item.title}</h3>
+                  <p className="text-neutral-500 text-sm mt-1">{item.focus}</p>
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {item.tools.map(tool => (
+                      <span key={tool} className="px-2 py-1 text-xs text-neutral-400 bg-neutral-800/50 rounded">
+                        {tool}
+                      </span>
+                    ))}
                   </div>
-                  <span className="text-xs text-neutral-500 font-mono whitespace-nowrap">{project.date}</span>
-                </div>
-                <p className="text-neutral-400 text-sm leading-relaxed mb-4">{project.description}</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.skills.map((skill, i) => (
-                    <span key={i} className="px-2 py-1 text-xs text-neutral-400 bg-neutral-800/50 rounded">
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex gap-4">
-                  {project.links.project && (
-                    <a href={project.links.project} target="_blank" rel="noopener noreferrer"
-                       className="text-xs text-neutral-400 hover:text-white transition-colors">
-                      Live Demo ↗
-                    </a>
-                  )}
-                  {project.links.github && (
-                    <a href={project.links.github} target="_blank" rel="noopener noreferrer"
-                       className="text-xs text-neutral-400 hover:text-white transition-colors">
-                      Source ↗
-                    </a>
-                  )}
+                  <a
+                    href={item.figma}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-4 px-4 py-2 text-xs text-neutral-400 border border-neutral-700 rounded-lg hover:text-white hover:border-neutral-500 transition-all duration-300"
+                  >
+                    Open in Figma ↗
+                  </a>
                 </div>
               </article>
             ))}

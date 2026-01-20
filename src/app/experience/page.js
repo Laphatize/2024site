@@ -1,37 +1,52 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 
-export default function Projects() {
-  const projects = [
+export default function Experience() {
+  const [showAllExperiences, setShowAllExperiences] = useState(false);
+
+  const experiences = [
     {
-      title: "Sera",
-      description: "An AI-powered finance app with personalized financial guidance, OCR receipt scanning, transaction management, and budgeting tools.",
-      date: "09/20/24 - 09/22/24",
-      badge: "PennApps XXV Hackathon Winner",
-      skills: ["Next.js", "React.js", "Node", "AI", "TailwindCSS", "Figma"],
-      links: { project: "https://sera.pranavramesh.dev", github: "https://github.com/sera-financial" }
+      title: "Founder, Software Engineer",
+      company: "Vyvern Corporation",
+      date: "August 2025 - Present",
+      description: "Building AI agents that protect organizations from social engineering attacks.",
+      links: { company: "https://vyvern.com" }
     },
     {
-      title: "InternHunt",
-      description: "A platform that helps students find software engineering and tech internships. Features automated job discovery and application tracking.",
-      date: "2024",
-      skills: ["Next.js", "React.js", "Node", "TailwindCSS"],
-      links: { project: "https://internhunt.pranavramesh.dev", github: "https://github.com/Laphatize/internhunt" }
+      title: "Software Engineer Intern",
+      company: "JPMorganChase&Co",
+      date: "June 2025 - August 2025",
+      description: "I worked on the Operations Technology team where I worked with Java, Springboot, Postgres, and Kafka.",
+      links: { company: "https://www.jpmorganchase.com" }
     },
     {
-      title: "Comcast Inquire",
-      description: "A chat interface to help with the sales and marketing of Comcast products. This project won Comcast's OpenAI Track at the Philly Codefest 2024.",
-      date: "04/24/24 - 09/26/24",
-      badge: "Philly Codefest Winner",
-      skills: ["Next.js", "React.js", "Node", "AI", "TailwindCSS", "Figma"],
-      links: { project: "https://comcast-inquire.vercel.app/", github: "https://github.com/laphatize/comcast-inquire" }
+      title: "Founder, Software Engineer",
+      company: "CTFGuide Corporation",
+      date: "Dec 2022 - Present",
+      description: "Raised funds from investors like Bullmont Capital and Penn State University. Designed and implemented the frontend using Figma, TailwindCSS, Next.js, and React.js, and developed the backend with Node.",
+      links: { company: "https://ctfguide.com", github: "https://github.com/ctfguide-tech" }
     },
     {
-      title: "Docket",
-      description: "Manage fleets of containers across your own infrastructure. Built for CTFGuide's virtual terminal service.",
-      date: "05/20/24 - Present",
-      skills: ["Node.js", "Express", "Docker", "Tensorflow"],
-      links: { github: "https://github.com/ctfguide-tech/docket" }
+      title: "Software Engineering & TPM Intern",
+      company: "Snyder Technologies",
+      date: "May 2024 - Aug 2024",
+      description: "Designed and implemented a new UI/UX for the company website using Figma, Angular, and HTML. Worked on various projects across domains such as cybersecurity, government, and entertainment.",
+      links: { company: "https://snyder.tech" }
+    },
+    {
+      title: "Software Engineer",
+      company: "Knowt Inc",
+      date: "May 2023 - Aug 2023",
+      description: "Developed profile customization features using React.js, HTML, and CSS. Refactored UI components for enhanced user profile functionality.",
+      links: { company: "https://knowt.com" }
+    },
+    {
+      title: "Software Engineering Intern",
+      company: "The Pennsylvania State University",
+      date: "Aug 2022 - Dec 2022",
+      description: "Conceptualized and executed a comprehensive inventory management system using the MERN stack, resulting in a 52% increase in operational efficiency and improved resource tracking accuracy.",
+      links: { company: "https://psu.edu" }
     }
   ];
 
@@ -53,11 +68,11 @@ export default function Projects() {
             key={item.id}
             href={item.href}
             className={`group flex items-center gap-3 py-2 text-sm transition-all duration-300 ${
-              item.id === "projects" ? "text-white" : "text-neutral-500 hover:text-neutral-300"
+              item.id === "experience" ? "text-white" : "text-neutral-500 hover:text-neutral-300"
             }`}
           >
             <span className={`h-px transition-all duration-300 ${
-              item.id === "projects" ? "w-12 bg-white" : "w-6 bg-neutral-600 group-hover:w-8 group-hover:bg-neutral-400"
+              item.id === "experience" ? "w-12 bg-white" : "w-6 bg-neutral-600 group-hover:w-8 group-hover:bg-neutral-400"
             }`} />
             <span className="font-light tracking-wide">{item.label}</span>
           </Link>
@@ -71,7 +86,7 @@ export default function Projects() {
             key={item.id}
             href={item.href}
             className={`px-4 py-2 text-sm rounded-full transition-all duration-300 ${
-              item.id === "projects"
+              item.id === "experience"
                 ? "bg-white text-neutral-900 font-medium"
                 : "text-neutral-400 hover:text-white"
             }`}
@@ -119,46 +134,47 @@ export default function Projects() {
           </div>
         </header>
 
-        {/* Projects Section */}
+        {/* Experience Section */}
         <section>
-          <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-wider mb-8">Projects</h2>
-          <div className="space-y-6">
-            {projects.map((project, index) => (
-              <article key={index} className="group p-5 rounded-xl bg-neutral-900/30 border border-neutral-800/30 hover:border-neutral-700/50 hover:bg-neutral-900/50 transition-all duration-300">
-                <div className="flex items-start justify-between gap-4 mb-3">
-                  <div>
-                    <h3 className="text-white font-medium">{project.title}</h3>
-                    {project.badge && (
-                      <span className="inline-block mt-1 text-xs text-amber-500 font-medium">{project.badge}</span>
-                    )}
-                  </div>
-                  <span className="text-xs text-neutral-500 font-mono whitespace-nowrap">{project.date}</span>
-                </div>
-                <p className="text-neutral-400 text-sm leading-relaxed mb-4">{project.description}</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.skills.map((skill, i) => (
-                    <span key={i} className="px-2 py-1 text-xs text-neutral-400 bg-neutral-800/50 rounded">
-                      {skill}
-                    </span>
-                  ))}
-                </div>
+          <h2 className="text-sm font-medium text-neutral-500 uppercase tracking-wider mb-8">Work Experience</h2>
+          <div className="space-y-8">
+            {(showAllExperiences ? experiences : experiences.slice(0, 3)).map((exp, index) => (
+              <article key={index} className="group">
                 <div className="flex gap-4">
-                  {project.links.project && (
-                    <a href={project.links.project} target="_blank" rel="noopener noreferrer"
-                       className="text-xs text-neutral-400 hover:text-white transition-colors">
-                      Live Demo ↗
-                    </a>
-                  )}
-                  {project.links.github && (
-                    <a href={project.links.github} target="_blank" rel="noopener noreferrer"
-                       className="text-xs text-neutral-400 hover:text-white transition-colors">
-                      Source ↗
-                    </a>
-                  )}
+                  <div className="w-24 flex-shrink-0 pt-1">
+                    <p className="text-xs text-neutral-500 font-mono">{exp.date.split(" - ")[0]}</p>
+                  </div>
+                  <div className="flex-1 pb-8 border-b border-neutral-800/50 group-last:border-0">
+                    <h3 className="text-white font-medium mb-1">{exp.title}</h3>
+                    <p className="text-neutral-400 text-sm mb-3">{exp.company}</p>
+                    <p className="text-neutral-500 text-sm leading-relaxed mb-3">{exp.description}</p>
+                    <div className="flex gap-4">
+                      {exp.links.company && (
+                        <a href={exp.links.company} target="_blank" rel="noopener noreferrer" 
+                           className="text-xs text-neutral-400 hover:text-white transition-colors">
+                          Website ↗
+                        </a>
+                      )}
+                      {exp.links.github && (
+                        <a href={exp.links.github} target="_blank" rel="noopener noreferrer"
+                           className="text-xs text-neutral-400 hover:text-white transition-colors">
+                          GitHub ↗
+                        </a>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </article>
             ))}
           </div>
+          {!showAllExperiences && (
+            <button 
+              onClick={() => setShowAllExperiences(true)} 
+              className="mt-8 text-sm text-neutral-400 hover:text-white transition-colors"
+            >
+              Show all experiences →
+            </button>
+          )}
         </section>
 
         {/* Footer */}
