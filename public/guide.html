@@ -1,0 +1,2431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE INTERN HANDBOOK — A field guide to landing a software engineering internship</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:opsz,wght@6..72,300..700&display=swap" rel="stylesheet">
+<style>
+  /* ============ DESIGN TOKENS ============ */
+  :root {
+    --paper: #f3ebd9;
+    --paper-2: #ece2cc;
+    --ink: #0d0d0d;
+    --ink-soft: #2a2722;
+    --vermillion: #e8442a;
+    --cobalt: #1c3d8f;
+    --moss: #4d6b3a;
+    --muted: #8a8275;
+    --rule: rgba(13,13,13,0.18);
+    --rule-strong: rgba(13,13,13,0.45);
+    --grain-opacity: 0.08;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.55;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>");
+    mix-blend-mode: multiply;
+  }
+
+  ::selection { background: var(--vermillion); color: var(--paper); }
+
+  /* ============ NAV ============ */
+  nav.topnav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 14px 32px;
+    background: rgba(243, 235, 217, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  nav.topnav .brand { font-weight: 700; }
+  nav.topnav .brand .dot { color: var(--vermillion); }
+  nav.topnav ul { list-style: none; display: flex; gap: 24px; }
+  nav.topnav a { color: var(--ink); text-decoration: none; transition: color .2s; }
+  nav.topnav a:hover { color: var(--vermillion); }
+  @media (max-width: 800px) {
+    nav.topnav ul { display: none; }
+  }
+
+  /* ============ TYPOGRAPHY ============ */
+  .display {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 30;
+    line-height: 0.92;
+    letter-spacing: -0.025em;
+    font-weight: 400;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .uppercase { text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* ============ LAYOUT ============ */
+  section {
+    padding: 100px 32px;
+    max-width: 1280px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+  }
+
+  /* Chapter marker */
+  .chapter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--vermillion);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .chapter::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--vermillion);
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 120px;
+    padding-bottom: 80px;
+    position: relative;
+  }
+  .hero-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 8px 0;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero h1 {
+    font-size: clamp(56px, 13vw, 188px);
+    margin-bottom: 32px;
+  }
+  .hero h1 .line {
+    display: block;
+    overflow: hidden;
+  }
+  .hero h1 .line span {
+    display: block;
+    transform: translateY(110%);
+    animation: rise 1s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  .hero h1 .line:nth-child(1) span { animation-delay: 0.1s; }
+  .hero h1 .line:nth-child(2) span { animation-delay: 0.25s; }
+  .hero h1 .line:nth-child(3) span { animation-delay: 0.4s; }
+  .hero h1 em {
+    font-style: italic;
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+    color: var(--vermillion);
+  }
+  .hero-sub {
+    grid-column: 6 / span 6;
+    font-size: 22px;
+    line-height: 1.45;
+    max-width: 560px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.9s forwards;
+  }
+  .hero-sub::first-letter {
+    font-family: 'Fraunces', serif;
+    font-size: 4em;
+    float: left;
+    line-height: 0.85;
+    padding: 4px 8px 0 0;
+    font-weight: 600;
+    color: var(--vermillion);
+  }
+  .hero-bottom {
+    margin-top: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.2s forwards;
+  }
+  .scroll-cue {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .scroll-cue .arrow {
+    display: inline-block;
+    width: 60px;
+    height: 1px;
+    background: var(--ink);
+    position: relative;
+    animation: stretch 2s ease-in-out infinite;
+  }
+  .scroll-cue .arrow::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -3px;
+    width: 8px;
+    height: 8px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    transform: rotate(-45deg);
+  }
+
+  @keyframes rise { to { transform: translateY(0); } }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes stretch {
+    0%, 100% { transform: scaleX(1); transform-origin: left; }
+    50% { transform: scaleX(1.3); transform-origin: left; }
+  }
+
+  /* Floating decorative numerals in hero */
+  .hero-decor {
+    position: absolute;
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+    font-style: italic;
+    color: var(--vermillion);
+    opacity: 0.12;
+    pointer-events: none;
+    line-height: 1;
+  }
+  .hero-decor.d1 { top: 18%; right: 5%; font-size: 240px; transform: rotate(-12deg); animation: float 8s ease-in-out infinite; }
+  .hero-decor.d2 { bottom: 15%; left: 4%; font-size: 160px; transform: rotate(8deg); animation: float 10s ease-in-out infinite reverse; }
+  @keyframes float {
+    0%, 100% { transform: rotate(-12deg) translateY(0); }
+    50% { transform: rotate(-12deg) translateY(-20px); }
+  }
+
+  /* ============ TOC / CHAPTERS PREVIEW ============ */
+  .toc {
+    border-top: 2px solid var(--ink);
+    padding-top: 60px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 40px;
+  }
+  .toc-item {
+    border: 1px solid var(--rule);
+    padding: 28px;
+    transition: all 0.4s cubic-bezier(.2,.8,.2,1);
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--ink);
+    background: transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  .toc-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--ink);
+    transform: translateY(101%);
+    transition: transform 0.4s cubic-bezier(.2,.8,.2,1);
+  }
+  .toc-item:hover::before { transform: translateY(0); }
+  .toc-item:hover { color: var(--paper); }
+  .toc-item:hover .toc-num { color: var(--vermillion); }
+  .toc-item > * { position: relative; z-index: 1; }
+  .toc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--vermillion);
+    margin-bottom: 16px;
+    transition: color 0.3s;
+  }
+  .toc-title {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-variation-settings: 'opsz' 60;
+    line-height: 1.05;
+    margin-bottom: 12px;
+  }
+  .toc-desc {
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+  .toc-item:hover .toc-desc { color: rgba(243, 235, 217, 0.8); }
+  @media (max-width: 800px) {
+    .toc-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ============ SECTION HEADERS ============ */
+  .section-head {
+    margin-bottom: 60px;
+    border-top: 2px solid var(--ink);
+    padding-top: 32px;
+  }
+  .section-head h2 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 50;
+    font-size: clamp(48px, 8vw, 96px);
+    line-height: 0.95;
+    margin-top: 12px;
+    letter-spacing: -0.02em;
+  }
+  .section-head h2 em {
+    font-style: italic;
+    color: var(--vermillion);
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+  }
+  .section-head .lede {
+    margin-top: 20px;
+    font-size: 22px;
+    max-width: 720px;
+    color: var(--ink-soft);
+  }
+
+  /* Reveal-on-scroll */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1);
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ============ TIMELINE SECTION ============ */
+  .timeline-wrap {
+    margin-top: 40px;
+    position: relative;
+    padding: 60px 0;
+    overflow: hidden;
+  }
+  .timeline-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .timeline-line {
+    stroke: var(--ink);
+    stroke-width: 2;
+    fill: none;
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    transition: stroke-dashoffset 2.5s ease-out;
+  }
+  .timeline-wrap.in .timeline-line { stroke-dashoffset: 0; }
+  .timeline-node circle {
+    fill: var(--paper);
+    stroke: var(--ink);
+    stroke-width: 2;
+    transform-origin: center;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.4s cubic-bezier(.2,1.6,.4,1);
+  }
+  .timeline-wrap.in .timeline-node circle { opacity: 1; transform: scale(1); }
+  .timeline-node.active circle { fill: var(--vermillion); stroke: var(--vermillion); }
+  .timeline-node text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    fill: var(--ink);
+    opacity: 0;
+    transition: opacity 0.6s 0.6s;
+  }
+  .timeline-wrap.in .timeline-node text { opacity: 1; }
+  .timeline-node:nth-child(2) circle { transition-delay: 0.6s; }
+  .timeline-node:nth-child(3) circle { transition-delay: 0.9s; }
+  .timeline-node:nth-child(4) circle { transition-delay: 1.2s; }
+  .timeline-node:nth-child(5) circle { transition-delay: 1.5s; }
+  .timeline-node:nth-child(6) circle { transition-delay: 1.8s; }
+  .timeline-node:nth-child(7) circle { transition-delay: 2.1s; }
+
+  .tl-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .tl-card {
+    background: var(--paper-2);
+    padding: 24px;
+    border-left: 3px solid var(--vermillion);
+  }
+  .tl-card .month {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--vermillion);
+    margin-bottom: 8px;
+  }
+  .tl-card h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    margin-bottom: 8px;
+    line-height: 1.1;
+  }
+  .tl-card p { font-size: 15px; line-height: 1.5; color: var(--ink-soft); }
+  @media (max-width: 800px) { .tl-cards { grid-template-columns: 1fr; } }
+
+  /* ============ TWO-COL CONTENT ============ */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-top: 40px;
+  }
+  .two-col h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+  .two-col p { margin-bottom: 16px; }
+  @media (max-width: 800px) { .two-col { grid-template-columns: 1fr; gap: 32px; } }
+
+  /* ============ PULL QUOTE ============ */
+  .pullquote {
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    padding: 40px 0;
+    margin: 60px 0;
+    text-align: center;
+  }
+  .pullquote q {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+    font-size: clamp(28px, 5vw, 56px);
+    line-height: 1.05;
+    quotes: '\201C' '\201D';
+  }
+  .pullquote .attr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-top: 24px;
+    color: var(--vermillion);
+  }
+
+  /* ============ GAME: BULLET BATTLE ============ */
+  .game-frame {
+    background: var(--paper-2);
+    border: 2px solid var(--ink);
+    margin-top: 60px;
+    position: relative;
+  }
+  .game-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+  .game-header .title { display: flex; align-items: center; gap: 12px; }
+  .game-header .title::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: var(--vermillion);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+  }
+  .game-body { padding: 32px; }
+  .bb-prompt {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    margin-bottom: 24px;
+    line-height: 1.3;
+  }
+  .bb-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 700px) { .bb-options { grid-template-columns: 1fr; } }
+  .bb-option {
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    padding: 24px;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink);
+    transition: all 0.2s;
+    position: relative;
+  }
+  .bb-option:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+  .bb-option .label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--vermillion);
+    margin-bottom: 12px;
+  }
+  .bb-option.correct {
+    background: #cee6c4;
+    border-color: var(--moss);
+  }
+  .bb-option.wrong {
+    background: #f5c8bf;
+    border-color: var(--vermillion);
+  }
+  .bb-feedback {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 24px;
+    margin-top: 16px;
+    display: none;
+    font-size: 15px;
+  }
+  .bb-feedback.show { display: block; animation: fadeUp 0.4s; }
+  .bb-feedback strong { color: var(--vermillion); }
+  .bb-feedback .next {
+    margin-top: 16px;
+    background: var(--vermillion);
+    color: var(--paper);
+    border: none;
+    padding: 10px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .bb-feedback .next:hover { background: var(--paper); color: var(--ink); }
+  .bb-progress {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .bb-progress .dot {
+    width: 24px;
+    height: 4px;
+    background: var(--rule);
+    transition: background 0.3s;
+  }
+  .bb-progress .dot.done { background: var(--moss); }
+  .bb-progress .dot.current { background: var(--vermillion); }
+  .bb-progress .dot.miss { background: var(--vermillion); opacity: 0.4; }
+  .bb-final {
+    text-align: center;
+    padding: 32px;
+    display: none;
+  }
+  .bb-final.show { display: block; }
+  .bb-final h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    margin-bottom: 12px;
+  }
+  .bb-final .score-num {
+    font-family: 'Fraunces', serif;
+    font-size: 96px;
+    font-style: italic;
+    color: var(--vermillion);
+    line-height: 1;
+  }
+
+  /* ============ DO / DON'T LIST ============ */
+  .dodont {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 40px;
+    border: 2px solid var(--ink);
+  }
+  .dodont > div { padding: 32px; }
+  .dodont .do { background: var(--paper-2); border-right: 2px solid var(--ink); }
+  .dodont .dont { background: var(--paper); }
+  .dodont h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 20px;
+  }
+  .dodont .do h4 { color: var(--moss); }
+  .dodont .dont h4 { color: var(--vermillion); }
+  .dodont ul { list-style: none; }
+  .dodont li {
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--rule);
+    display: flex;
+    gap: 12px;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+  .dodont li:last-child { border-bottom: none; }
+  .dodont .do li::before { content: '+'; color: var(--moss); font-weight: 700; flex-shrink: 0; }
+  .dodont .dont li::before { content: '−'; color: var(--vermillion); font-weight: 700; flex-shrink: 0; }
+  @media (max-width: 700px) {
+    .dodont { grid-template-columns: 1fr; }
+    .dodont .do { border-right: none; border-bottom: 2px solid var(--ink); }
+  }
+
+  /* ============ COLD EMAIL TEMPLATE ============ */
+  .email-card {
+    background: var(--paper-2);
+    border: 1px solid var(--rule-strong);
+    margin-top: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+  }
+  .email-meta {
+    border-bottom: 1px solid var(--rule-strong);
+    padding: 16px 24px;
+    background: var(--paper);
+  }
+  .email-meta div { margin: 4px 0; }
+  .email-meta .label { color: var(--muted); display: inline-block; width: 60px; }
+  .email-body {
+    padding: 24px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+  }
+  .email-body .hi { color: var(--vermillion); font-style: italic; }
+
+  /* ============ GAME: BIG-O MATCHER ============ */
+  .bigo-game {
+    margin-top: 40px;
+  }
+  .bigo-board {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding: 32px;
+  }
+  @media (max-width: 700px) { .bigo-board { grid-template-columns: 1fr; gap: 20px; } }
+  .bigo-col h5 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .bigo-pill {
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    padding: 14px 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+  }
+  .bigo-pill:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .bigo-pill.selected {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .bigo-pill.matched {
+    background: #cee6c4;
+    border-color: var(--moss);
+    color: var(--ink);
+    cursor: default;
+    transform: none;
+    box-shadow: none;
+  }
+  .bigo-pill.matched:hover { transform: none; box-shadow: none; }
+  .bigo-pill.shake { animation: shake 0.4s; }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); background: #f5c8bf; }
+    75% { transform: translateX(6px); background: #f5c8bf; }
+  }
+  .bigo-pill .complexity {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--vermillion);
+  }
+  .bigo-pill.matched .complexity { color: var(--moss); }
+  .bigo-pill.selected .complexity { color: var(--paper); }
+  .bigo-status {
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+  .bigo-status .count { color: var(--vermillion); font-weight: 700; }
+
+  /* ============ STAR BUILDER ============ */
+  .star-builder { margin-top: 40px; }
+  .star-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    padding: 32px;
+  }
+  @media (max-width: 700px) { .star-fields { grid-template-columns: 1fr; } }
+  .star-field label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
+  }
+  .star-field label .letter {
+    display: inline-block;
+    background: var(--vermillion);
+    color: var(--paper);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 24px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-right: 8px;
+  }
+  .star-field label .hint { color: var(--muted); margin-left: 8px; text-transform: none; letter-spacing: 0; font-size: 12px; }
+  .star-field textarea {
+    width: 100%;
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    padding: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    resize: vertical;
+    min-height: 90px;
+    color: var(--ink);
+  }
+  .star-field textarea:focus { outline: none; border-color: var(--vermillion); }
+  .star-output {
+    margin: 0 32px 32px;
+    padding: 24px;
+    background: var(--ink);
+    color: var(--paper);
+    border-left: 4px solid var(--vermillion);
+    font-family: 'Newsreader', serif;
+    font-size: 16px;
+    line-height: 1.65;
+    min-height: 120px;
+  }
+  .star-output .empty {
+    color: var(--muted);
+    font-style: italic;
+  }
+  .star-output .badge {
+    display: inline-block;
+    background: var(--vermillion);
+    color: var(--paper);
+    padding: 2px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin: 0 6px;
+    vertical-align: middle;
+  }
+  .star-meter {
+    padding: 0 32px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+  .star-meter .bar {
+    flex: 1;
+    height: 6px;
+    background: var(--rule);
+    overflow: hidden;
+  }
+  .star-meter .bar-fill {
+    height: 100%;
+    background: var(--vermillion);
+    width: 0;
+    transition: width 0.4s;
+  }
+
+  /* ============ RED FLAG GAME ============ */
+  .rf-game { margin-top: 40px; }
+  .rf-jd {
+    padding: 32px;
+    font-family: 'Newsreader', serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .rf-jd h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    margin-bottom: 4px;
+  }
+  .rf-jd .company {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .rf-jd p { margin-bottom: 16px; }
+  .rf-jd .clickable {
+    cursor: pointer;
+    border-bottom: 1px dashed transparent;
+    transition: all 0.2s;
+    padding: 0 2px;
+  }
+  .rf-jd .clickable:hover { background: rgba(232, 68, 42, 0.1); border-bottom-color: var(--vermillion); }
+  .rf-jd .clickable.flagged {
+    background: var(--vermillion);
+    color: var(--paper);
+    border-bottom-color: var(--vermillion);
+  }
+  .rf-jd .clickable.missed {
+    background: rgba(232, 68, 42, 0.3);
+    border-bottom: 1px solid var(--vermillion);
+  }
+  .rf-jd .clickable.wrong {
+    background: var(--ink);
+    color: var(--paper);
+    text-decoration: line-through;
+  }
+  .rf-controls {
+    padding: 20px 32px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .rf-controls .stats { display: flex; gap: 24px; }
+  .rf-controls .stats span { color: var(--muted); }
+  .rf-controls .stats b { color: var(--vermillion); margin-left: 4px; }
+  .rf-btn {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 10px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .rf-btn:hover { background: var(--vermillion); }
+  .rf-result {
+    padding: 24px 32px;
+    background: var(--paper);
+    border-top: 2px solid var(--ink);
+    display: none;
+  }
+  .rf-result.show { display: block; }
+  .rf-result h5 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+  .rf-result ul { list-style: none; }
+  .rf-result li {
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--rule);
+    font-size: 14px;
+    display: flex;
+    gap: 12px;
+  }
+  .rf-result li::before {
+    content: attr(data-icon);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* ============ STAT GRID ============ */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    margin: 40px 0;
+  }
+  .stat-cell {
+    padding: 32px 24px;
+    border-right: 1px solid var(--rule);
+  }
+  .stat-cell:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 56px;
+    font-variation-settings: 'opsz' 144, 'SOFT' 80;
+    line-height: 1;
+    color: var(--vermillion);
+  }
+  .stat-num em {
+    font-style: italic;
+    font-size: 0.6em;
+    color: var(--ink);
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-top: 12px;
+    color: var(--ink-soft);
+  }
+  @media (max-width: 700px) {
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .stat-cell:nth-child(2) { border-right: none; }
+    .stat-cell:nth-child(1), .stat-cell:nth-child(2) { border-bottom: 1px solid var(--rule); }
+  }
+
+  /* ============ NEGOTIATION BLOCK ============ */
+  .neg-script {
+    background: var(--paper-2);
+    border-left: 4px solid var(--cobalt);
+    padding: 32px;
+    margin-top: 24px;
+    font-family: 'Newsreader', serif;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+  .neg-script .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--cobalt);
+    margin-right: 8px;
+  }
+  .neg-script p { margin-bottom: 12px; }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 80px 32px 40px;
+    margin-top: 80px;
+  }
+  footer .inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  footer .big {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 50;
+    font-size: clamp(40px, 7vw, 88px);
+    line-height: 0.95;
+    margin-bottom: 60px;
+    letter-spacing: -0.02em;
+  }
+  footer .big em {
+    font-style: italic;
+    color: var(--vermillion);
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+  }
+  footer .cols {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    border-top: 1px solid rgba(243, 235, 217, 0.2);
+    padding-top: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  @media (max-width: 700px) { footer .cols { grid-template-columns: 1fr 1fr; } }
+  footer .col-title {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--vermillion);
+    margin-bottom: 12px;
+  }
+  footer ul { list-style: none; }
+  footer li { padding: 4px 0; opacity: 0.8; }
+  footer .copy {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(243, 235, 217, 0.2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.6;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ============ ACCESSIBILITY ============ */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 12px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    z-index: 1000;
+    text-decoration: none;
+  }
+  .skip-link:focus { left: 12px; }
+  *:focus-visible { outline: 3px solid var(--vermillion); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    .reveal, .timeline-wrap { opacity: 1 !important; transform: none !important; }
+    .timeline-line { stroke-dashoffset: 0 !important; }
+    .timeline-node circle { opacity: 1 !important; transform: scale(1) !important; }
+  }
+
+  /* ============ FRONT MATTER ============ */
+  .front-matter {
+    background: var(--paper-2);
+    padding: 80px 32px;
+    margin: 0;
+    max-width: none;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+  }
+  .front-matter-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .fm-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 60px;
+    margin-top: 40px;
+  }
+  @media (max-width: 800px) { .fm-grid { grid-template-columns: 1fr; gap: 32px; } }
+  .fm-grid h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    line-height: 1.05;
+    font-variation-settings: 'opsz' 60;
+  }
+  .fm-grid h3 em { font-style: italic; color: var(--vermillion); }
+  .fm-grid p { margin-bottom: 14px; }
+  .fm-row {
+    display: contents;
+  }
+  .fm-row + .fm-row > * {
+    border-top: 1px solid var(--rule);
+    padding-top: 32px;
+  }
+  .fm-tips {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 32px;
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+  }
+  @media (max-width: 700px) { .fm-tips { grid-template-columns: 1fr; gap: 16px; } }
+  .fm-tips h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    color: var(--vermillion);
+    line-height: 1;
+  }
+  .fm-tips ol {
+    list-style: none;
+    counter-reset: tip;
+  }
+  .fm-tips li {
+    counter-increment: tip;
+    padding: 10px 0 10px 36px;
+    border-bottom: 1px dashed rgba(243, 235, 217, 0.2);
+    position: relative;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .fm-tips li:last-child { border-bottom: none; }
+  .fm-tips li::before {
+    content: counter(tip, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--vermillion);
+    font-weight: 700;
+  }
+
+  /* TOC TWO-LEVEL */
+  .toc-section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-soft);
+    margin: 32px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+    grid-column: 1 / -1;
+  }
+  .toc-section-label:first-of-type { margin-top: 16px; }
+
+  /* ============ RESOURCE LIBRARY ============ */
+  .resource-section { padding-top: 80px; }
+  .resource-list { margin-top: 40px; }
+  .resource-card {
+    border-top: 2px solid var(--ink);
+    padding: 40px 0;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 60px;
+  }
+  .resource-card:last-child { border-bottom: 2px solid var(--ink); }
+  @media (max-width: 900px) { .resource-card { grid-template-columns: 1fr; gap: 24px; } }
+  .resource-meta .num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 88px;
+    line-height: 0.9;
+    color: var(--vermillion);
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+    margin-bottom: 16px;
+  }
+  .resource-meta .category {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+    padding: 4px 10px;
+    background: var(--paper-2);
+    display: inline-block;
+  }
+  .resource-meta .resource-title {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    line-height: 1.05;
+    margin-bottom: 12px;
+    font-variation-settings: 'opsz' 80;
+  }
+  .resource-meta .url {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--cobalt);
+    word-break: break-all;
+    display: block;
+    margin-bottom: 8px;
+    text-decoration: none;
+    border-bottom: 1px dashed var(--cobalt);
+    padding-bottom: 4px;
+  }
+  .resource-meta .url:hover { color: var(--vermillion); border-bottom-color: var(--vermillion); }
+  .resource-meta .access {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .resource-body h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--vermillion);
+    margin-bottom: 8px;
+    margin-top: 20px;
+  }
+  .resource-body h4:first-child { margin-top: 0; }
+  .resource-body p {
+    margin-bottom: 12px;
+    font-size: 16.5px;
+    line-height: 1.55;
+  }
+  .resource-body ul {
+    margin-left: 20px;
+    margin-bottom: 12px;
+  }
+  .resource-body li {
+    margin-bottom: 6px;
+    font-size: 15.5px;
+    line-height: 1.5;
+  }
+
+  /* ============ TINY ANIMATED ROBOT GUIDE ============ */
+  .robot {
+    display: inline-block;
+    width: 32px;
+    height: 40px;
+    vertical-align: middle;
+    margin: 0 6px;
+  }
+  .robot rect, .robot circle { fill: var(--vermillion); }
+  .robot .eye { fill: var(--paper); animation: blink 4s infinite; }
+  @keyframes blink {
+    0%, 92%, 100% { transform: scaleY(1); }
+    94%, 96% { transform: scaleY(0.1); }
+  }
+
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav class="topnav" aria-label="Primary">
+  <div class="brand">THE INTERN HANDBOOK<span class="dot">.</span></div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contents">Contents</a></li>
+    <li><a href="#timeline">Chapters</a></li>
+    <li><a href="#resources">Resources</a></li>
+  </ul>
+</nav>
+
+<main id="main">
+
+<!-- ========== HERO / LANDING PAGE ========== -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-decor d1" aria-hidden="true">06</div>
+  <div class="hero-decor d2" aria-hidden="true">∞</div>
+
+  <div class="hero-meta">
+    <span>Vol. 01 — Edition 2026</span>
+    <span>An Internet Resource Guide</span>
+    <span>Read Time ~ 30 min</span>
+  </div>
+
+  <h1 class="display" id="hero-title">
+    <span class="line"><span>How to land</span></span>
+    <span class="line"><span>a software</span></span>
+    <span class="line"><span><em>internship.</em></span></span>
+  </h1>
+
+  <div class="grid-12" style="margin-top: 40px;">
+    <p class="hero-sub">
+      A specialist-to-specialist resource guide for Penn State students in computing majors — Computer Science, HCDD, IST, Data Sciences — preparing to apply for software engineering internships. Six chapters of practical guidance, three interactive exercises, and a curated library of six Internet resources that experienced applicants actually use.
+    </p>
+  </div>
+
+  <div class="hero-bottom">
+    <span>↳ chapter 00 — orientation</span>
+    <div class="scroll-cue">
+      <span>begin</span>
+      <span class="arrow"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ABOUT THIS GUIDE (FRONT MATTER) ========== -->
+<section class="front-matter" id="about" aria-labelledby="about-h">
+  <div class="front-matter-inner">
+    <div class="chapter">Front Matter · 00.1</div>
+    <h2 class="display" id="about-h" style="font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144, 'SOFT' 50; font-size: clamp(48px, 8vw, 88px); line-height: 0.95; letter-spacing: -0.02em;">About <em style="font-style: italic; color: var(--vermillion);">this guide.</em></h2>
+
+    <div class="fm-grid">
+
+      <div class="fm-row">
+        <h3>What's <em>in it</em>.</h3>
+        <div>
+          <p>This guide is an Internet resource guide for the software engineering internship search. It does two things in parallel. The first six chapters teach the application process itself: timing, résumés, outreach, technical preparation, behavioral interviews, and offer evaluation. Three of those chapters include short interactive exercises so you can test your understanding rather than just read about it.</p>
+          <p>The seventh section — the Resource Library — annotates six Internet resources that experienced applicants rely on year over year. Each annotation explains what the resource is, what it contains, why it matters specifically for a Penn State computing student applying to software engineering internships, and how to use it efficiently without wasting time.</p>
+        </div>
+      </div>
+
+      <div class="fm-row">
+        <h3>Who it's <em>for</em>.</h3>
+        <div>
+          <p>The guide is written for Penn State undergraduate students in the College of Information Sciences and Technology, the College of Engineering's Computer Science program, and adjacent computing majors — Human-Centered Design and Development, Data Sciences, Cybersecurity Analytics and Operations, and Computational Mathematics — who are preparing to apply for a software engineering internship in the next twelve to eighteen months.</p>
+          <p>The intended reader is a junior or senior student who has completed at least one programming-intensive course (CMPSC 121 or equivalent), has a working résumé draft, and is now trying to convert effort into an offer. The guide assumes you have already decided that a software engineering internship is what you want; it does not argue the case for one.</p>
+        </div>
+      </div>
+
+      <div class="fm-row">
+        <h3>What it <em>assumes</em>.</h3>
+        <div>
+          <p>The reader is treated as an expert in some domains and a novice in others, which is the realistic state of an undergraduate. The guide assumes baseline programming literacy — comfort with at least one general-purpose language, basic familiarity with version control, and the ability to read a job description without needing acronyms defined. It does not assume prior interview experience, prior knowledge of compensation negotiation, or familiarity with the algorithmic patterns that appear on technical screens.</p>
+          <p>The guide is written for a U.S. application context. Federal labor law (FLSA) language, on-campus recruiting practices, and timing assumptions are calibrated to the United States. International students will find most of the technical and résumé content directly applicable; the timeline and compensation sections will need adjustment for non-U.S. cycles.</p>
+        </div>
+      </div>
+
+      <div class="fm-row">
+        <h3>How it's <em>organized</em>.</h3>
+        <div>
+          <p>The guide is sequential and can be read end-to-end in roughly thirty minutes, but it is also designed for non-linear reference. Each chapter is self-contained: the timing chapter answers when to apply, the résumé chapter answers what to put on the page, and so on. Section headers double as anchor links so you can deep-link into a specific topic from your notes or browser bookmarks.</p>
+          <p>Three chapters end with an interactive exercise — Bullet Battle (résumés), Big-O Matcher (technical prep), and a Red Flag Detector (offer evaluation). A fourth tool, the STAR Builder, sits inside the behavioral chapter. These are tools to test your judgment, not entertainment; treat them like end-of-chapter exercises in a textbook.</p>
+          <p>The Resource Library at the end is the document's main reference output. The six resources span the key categories an applicant needs: a job-listing directory, a compensation database, a technical-preparation handbook, a discussion community, an institutional resource, and an industry newsletter.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <aside class="fm-tips" aria-labelledby="tips-h">
+      <h4 id="tips-h">Tips for using this guide.</h4>
+      <ol>
+        <li>Read the timeline chapter first, even if you intend to skim everything else. Most application mistakes are timing mistakes.</li>
+        <li>Open the Resource Library in a second tab while you read. Several resources only make sense once you know which chapter is referencing them.</li>
+        <li>The interactive exercises are not graded and not tracked. Replay them — wrong answers are where the actual learning lives.</li>
+        <li>Anchor links work in both directions. Right-click a chapter heading to copy a deep link into your own notes or a study group chat.</li>
+        <li>The guide is opinionated. Where guidance conflicts with what you have heard from a peer, a parent, or a career fair representative, weigh the source against the specific evidence in this guide rather than averaging the two.</li>
+        <li>If you have ten minutes, read Chapter 1 (Timeline) and Resource 01 (the SimplifyJobs internships repository). If you have an hour, read everything. The marginal return on the second 50 minutes is high.</li>
+      </ol>
+    </aside>
+
+  </div>
+</section>
+
+<!-- ========== TABLE OF CONTENTS ========== -->
+<section class="toc" id="contents" aria-labelledby="toc-h">
+  <div class="chapter">Contents · 00.2</div>
+  <h2 class="display" id="toc-h" style="font-size: clamp(40px, 7vw, 80px); line-height: 1; max-width: 900px;">
+    Six chapters. Three games. <em>Six resources.</em>
+  </h2>
+
+  <div class="toc-grid">
+
+    <div class="toc-section-label">Part I · Front Matter</div>
+    <a href="#about" class="toc-item">
+      <div class="toc-num">00.1</div>
+      <div class="toc-title">About this guide</div>
+      <div class="toc-desc">Scope, audience, prerequisites, organization, and tips for use.</div>
+    </a>
+    <a href="#contents" class="toc-item">
+      <div class="toc-num">00.2</div>
+      <div class="toc-title">Contents</div>
+      <div class="toc-desc">Two-level overview of every chapter and resource — you are here.</div>
+    </a>
+    <div></div>
+
+    <div class="toc-section-label">Part II · The Application Process</div>
+    <a href="#timeline" class="toc-item">
+      <div class="toc-num">01</div>
+      <div class="toc-title">The Timeline</div>
+      <div class="toc-desc">When to start, when applications open, when to panic — and why "summer" is decided in October.</div>
+    </a>
+    <a href="#resume" class="toc-item">
+      <div class="toc-num">02 · GAME</div>
+      <div class="toc-title">The Résumé</div>
+      <div class="toc-desc">One page. Six seconds of attention. Play <em>Bullet Battle</em> to learn what survives the recruiter scan.</div>
+    </a>
+    <a href="#outreach" class="toc-item">
+      <div class="toc-num">03</div>
+      <div class="toc-title">The Outreach</div>
+      <div class="toc-desc">Cold emails that don't get deleted. Referrals without being weird about it.</div>
+    </a>
+    <a href="#technical" class="toc-item">
+      <div class="toc-num">04 · GAME</div>
+      <div class="toc-title">Technical Prep</div>
+      <div class="toc-desc">A study system that works. Then play <em>Big-O Matcher</em> to test if the patterns clicked.</div>
+    </a>
+    <a href="#behavioral" class="toc-item">
+      <div class="toc-num">05 · TOOL</div>
+      <div class="toc-title">Behavioral</div>
+      <div class="toc-desc">STAR is real and works. Build a live answer with the <em>STAR Builder</em>.</div>
+    </a>
+    <a href="#offer" class="toc-item">
+      <div class="toc-num">06 · GAME</div>
+      <div class="toc-title">The Offer</div>
+      <div class="toc-desc">Evaluate, negotiate, decline gracefully. Spot-the-red-flag in real listings.</div>
+    </a>
+
+    <div class="toc-section-label">Part III · The Resource Library</div>
+    <a href="#r-01" class="toc-item">
+      <div class="toc-num">R · 01</div>
+      <div class="toc-title">SimplifyJobs Internships repo</div>
+      <div class="toc-desc">Crowdsourced GitHub directory of every active U.S. tech internship, updated daily.</div>
+    </a>
+    <a href="#r-02" class="toc-item">
+      <div class="toc-num">R · 02</div>
+      <div class="toc-title">Levels.fyi</div>
+      <div class="toc-desc">Compensation database for tech roles, with intern-specific salary tables.</div>
+    </a>
+    <a href="#r-03" class="toc-item">
+      <div class="toc-num">R · 03</div>
+      <div class="toc-title">NeetCode</div>
+      <div class="toc-desc">Free, pattern-based technical interview preparation handbook.</div>
+    </a>
+    <a href="#r-04" class="toc-item">
+      <div class="toc-num">R · 04</div>
+      <div class="toc-title">r/cscareerquestions</div>
+      <div class="toc-desc">Reddit discussion community for tech career questions and interview recaps.</div>
+    </a>
+    <a href="#r-05" class="toc-item">
+      <div class="toc-num">R · 05</div>
+      <div class="toc-title">Penn State Career Services</div>
+      <div class="toc-desc">Institutional resource: counseling, the career fair, and the Nittany Lion Careers job board.</div>
+    </a>
+    <a href="#r-06" class="toc-item">
+      <div class="toc-num">R · 06</div>
+      <div class="toc-title">The Pragmatic Engineer</div>
+      <div class="toc-desc">Industry newsletter on hiring trends and engineering career practices.</div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ========== TIMELINE ========== -->
+<section id="timeline">
+  <div class="section-head reveal">
+    <div class="chapter">Chapter 01 · The Timeline</div>
+    <h2 class="display">The cycle starts <em>nine months</em> before the job does.</h2>
+    <p class="lede">Most students learn this the hard way. By the time you hear classmates talking about offers in February, the prime applications are already months old. Here's how the calendar actually moves.</p>
+  </div>
+
+  <div class="timeline-wrap reveal">
+    <svg class="timeline-svg" viewBox="0 0 1200 200" preserveAspectRatio="none">
+      <path class="timeline-line" d="M 60 130 Q 250 70 420 130 T 760 130 T 1140 130" />
+      <g class="timeline-node">
+        <circle cx="60" cy="130" r="10"/>
+        <text x="60" y="160" text-anchor="middle">JUL · WARM-UP</text>
+        <text x="60" y="178" text-anchor="middle" fill="#8a8275">build · résumé</text>
+      </g>
+      <g class="timeline-node active">
+        <circle cx="240" cy="100" r="12"/>
+        <text x="240" y="80" text-anchor="middle">AUG–SEP · WAVE 1</text>
+        <text x="240" y="62" text-anchor="middle" fill="#8a8275">FAANG opens early</text>
+      </g>
+      <g class="timeline-node">
+        <circle cx="420" cy="130" r="10"/>
+        <text x="420" y="160" text-anchor="middle">OCT · PEAK</text>
+        <text x="420" y="178" text-anchor="middle" fill="#8a8275">most postings live</text>
+      </g>
+      <g class="timeline-node">
+        <circle cx="600" cy="100" r="10"/>
+        <text x="600" y="80" text-anchor="middle">NOV–DEC · INTERVIEWS</text>
+        <text x="600" y="62" text-anchor="middle" fill="#8a8275">loops + take-homes</text>
+      </g>
+      <g class="timeline-node active">
+        <circle cx="780" cy="130" r="12"/>
+        <text x="780" y="160" text-anchor="middle">JAN · WAVE 2</text>
+        <text x="780" y="178" text-anchor="middle" fill="#8a8275">startups + late roles</text>
+      </g>
+      <g class="timeline-node">
+        <circle cx="960" cy="100" r="10"/>
+        <text x="960" y="80" text-anchor="middle">FEB–MAR · CLEAN-UP</text>
+        <text x="960" y="62" text-anchor="middle" fill="#8a8275">final offers</text>
+      </g>
+      <g class="timeline-node">
+        <circle cx="1140" cy="130" r="10"/>
+        <text x="1140" y="160" text-anchor="middle">MAY · START</text>
+        <text x="1140" y="178" text-anchor="middle" fill="#8a8275">internship begins</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="tl-cards reveal">
+    <div class="tl-card">
+      <div class="month">July → September</div>
+      <h4>The unfair advantage window</h4>
+      <p>Big tech (Google, Meta, Microsoft, Amazon, etc.) opens applications between mid-July and mid-September. Apply within 48 hours of posting. These roles fill on a rolling basis — by November the queue is so long that strong résumés get auto-filtered.</p>
+    </div>
+    <div class="tl-card">
+      <div class="month">October → December</div>
+      <h4>Volume + interviews</h4>
+      <p>Mid-size companies, fintechs, and "tier 2" listings flood the market. Interview loops from your earliest applications start landing. Expect to balance recruiter calls with finals. Block calendar time. Practice out loud.</p>
+    </div>
+    <div class="tl-card">
+      <div class="month">January → March</div>
+      <h4>The second wave is real</h4>
+      <p>Don't despair if you're empty-handed in January. Startups, smaller teams, and companies waiting on headcount approval post heavily Jan–Feb. Quality is often higher (less crowded), and your interview muscles are warm.</p>
+    </div>
+  </div>
+
+  <div class="pullquote reveal">
+    <q>The biggest mistake is treating "summer internship" as a spring problem. It isn't. By spring, the good roles are gone and you're competing with everyone who waited.</q>
+    <div class="attr">— a pattern that repeats every year</div>
+  </div>
+</section>
+
+<!-- ========== RESUME ========== -->
+<section id="resume">
+  <div class="section-head reveal">
+    <div class="chapter">Chapter 02 · The Résumé</div>
+    <h2 class="display">Six seconds. <em>One page.</em> Make every line earn its rent.</h2>
+    <p class="lede">A recruiter scanning hundreds of applications gives your résumé a glance — six to ten seconds in most studies — before deciding to read closer or pass. The goal is not to impress; the goal is to survive that glance.</p>
+  </div>
+
+  <div class="two-col reveal">
+    <div>
+      <h3>Structure that works</h3>
+      <p><strong>Header.</strong> Name, email, phone, GitHub, LinkedIn, portfolio. No address. No photo. No headshot.</p>
+      <p><strong>Education.</strong> University, degree, expected grad date, GPA if ≥ 3.4. List relevant coursework only if you have space.</p>
+      <p><strong>Experience.</strong> Reverse chronological. Internships, research, real jobs (yes, working at a coffee shop counts — leadership and reliability translate).</p>
+      <p><strong>Projects.</strong> Two to four. Pick the ones that look most like the job you want.</p>
+      <p><strong>Skills.</strong> Languages, frameworks, tools. Group them, don't dump.</p>
+    </div>
+    <div>
+      <h3>The bullet point formula</h3>
+      <p>Every bullet does three things: <strong>action verb</strong>, <strong>specific work</strong>, <strong>measurable outcome</strong>. Not all three are always possible — but aim for two out of three minimum.</p>
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 14px; background: var(--paper-2); padding: 16px; border-left: 3px solid var(--vermillion);">
+[verb] [thing you built] [tech you used]<br>→ [number, percentage, or scale]
+      </p>
+      <p>"Built" is the most overused verb on the planet. Reach for stronger ones: <em>shipped, designed, automated, refactored, instrumented, profiled, deployed, owned</em>.</p>
+    </div>
+  </div>
+
+  <div class="dodont reveal">
+    <div class="do">
+      <h4>Do</h4>
+      <ul>
+        <li>One page. Always one page. Reject every voice telling you otherwise.</li>
+        <li>Quantify what you can: users, latency, requests/sec, lines of code in a real project, dollars saved.</li>
+        <li>Lead with verbs: "Designed," "Shipped," "Profiled," "Reduced."</li>
+        <li>Use a single, readable font. EB Garamond, Charter, IBM Plex Sans, Source Serif — anything but Times New Roman.</li>
+        <li>Submit as PDF. Always PDF. Never .docx.</li>
+        <li>Tailor 20% per role: swap project order, tweak the skills list, adjust which bullet leads.</li>
+      </ul>
+    </div>
+    <div class="dont">
+      <h4>Don't</h4>
+      <ul>
+        <li>Don't list every language you've ever touched. If you wouldn't survive a 10-minute interview in it, leave it off.</li>
+        <li>Don't include a "Career Objective" section. Recruiters skip them. Use the space.</li>
+        <li>Don't write in passive voice ("Was responsible for..." → "Owned...").</li>
+        <li>Don't use graphics, columns, or icons that confuse parsers. ATS systems will mangle them.</li>
+        <li>Don't lie. Don't even stretch. The interview will catch it.</li>
+        <li>Don't include a photo, marital status, or birth date. Standard in some countries, hard pass in US tech.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BULLET BATTLE GAME -->
+  <div class="game-frame reveal">
+    <div class="game-header">
+      <div class="title">GAME · BULLET BATTLE</div>
+      <div class="meta">Pick the stronger bullet · 5 rounds</div>
+    </div>
+    <div class="game-body" id="bb-body">
+      <div class="bb-progress" id="bb-progress">
+        <div class="dot current"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      </div>
+      <div class="bb-prompt" id="bb-prompt">Round 1 — which bullet would survive a six-second scan?</div>
+      <div class="bb-options" id="bb-options"></div>
+      <div class="bb-feedback" id="bb-feedback"></div>
+    </div>
+    <div class="bb-final" id="bb-final">
+      <div class="score-num" id="bb-score">0/5</div>
+      <h4 id="bb-grade">Recruiter pile: ???</h4>
+      <p id="bb-recap" style="margin-top: 12px; color: var(--ink-soft);"></p>
+      <button class="bb-option" style="margin-top: 24px; display: inline-block; cursor: pointer;" onclick="resetBulletBattle()">Play again →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== OUTREACH ========== -->
+<section id="outreach">
+  <div class="section-head reveal">
+    <div class="chapter">Chapter 03 · The Outreach</div>
+    <h2 class="display">A referral is worth a hundred <em>cold submissions.</em></h2>
+    <p class="lede">Applying through the front door (career site → black hole) is the highest-volume, lowest-conversion path. Referrals, alumni connections, and well-targeted cold emails will move your application 10–50x faster.</p>
+  </div>
+
+  <div class="stat-grid reveal">
+    <div class="stat-cell">
+      <div class="stat-num">~3<em>%</em></div>
+      <div class="stat-label">Cold résumé drop conversion</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num">~40<em>%</em></div>
+      <div class="stat-label">Referral interview rate</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num">15</div>
+      <div class="stat-label">Cold emails to send weekly</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num">1<em>/10</em></div>
+      <div class="stat-label">Realistic reply rate</div>
+    </div>
+  </div>
+
+  <div class="two-col reveal">
+    <div>
+      <h3>How to ask for a referral without being weird</h3>
+      <p><strong>Rule one.</strong> Ask people who actually know you. A friend's friend you met once at orientation? No. A TA from last semester, a hackathon teammate, a club president — yes.</p>
+      <p><strong>Rule two.</strong> Make it free. Don't write "Could you refer me?" Write "I'd love to apply to X — totally fine if it's not a fit, but if you're comfortable referring, I can send a 3-line blurb."</p>
+      <p><strong>Rule three.</strong> Send the blurb pre-written. They will copy-paste it. Make it three sentences max plus the role link.</p>
+      <p><strong>Rule four.</strong> Always thank them. Always. And update them when you hear back, even if it's a rejection.</p>
+    </div>
+    <div>
+      <h3>The cold-email playbook</h3>
+      <p><strong>Find the right person.</strong> Not the recruiter — they're drowning. A senior engineer or EM on a team you actually care about. LinkedIn is fine. Their company directory is better.</p>
+      <p><strong>Subject line: short, specific.</strong> "Penn State CS '26 — quick question about the iOS team" beats "Internship inquiry" every time.</p>
+      <p><strong>Body: under 120 words.</strong> One paragraph. Three things: who you are, why <em>them</em> specifically, one tight ask.</p>
+      <p><strong>Don't pitch yourself.</strong> Pitch curiosity. People like answering questions. They don't like being sold to.</p>
+    </div>
+  </div>
+
+  <div class="email-card reveal">
+    <div class="email-meta">
+      <div><span class="label">From:</span> you@university.edu</div>
+      <div><span class="label">To:</span> [engineer@company.com]</div>
+      <div><span class="label">Subject:</span> Penn State CS '26 — quick question about the [team] team</div>
+    </div>
+    <div class="email-body">Hi [First name],
+
+I'm a senior at Penn State studying [major]. I came across your work on [specific thing — a blog post, a talk, an open-source repo] and it's the closest thing to what I want to build a career around.
+
+I'm applying to [Company]'s [role] for summer '26 and would love to hear what you wish you'd known before joining the [team] team. <span class="hi">No referral expectation</span> — just genuinely trying to understand the work.
+
+Happy to send my résumé if useful, or take 15 minutes whenever you have a free coffee break.
+
+Thanks for reading,
+[Your name]</div>
+  </div>
+
+  <div class="pullquote reveal">
+    <q>People don't reply to applications. People reply to people. Your job is to stop being an application.</q>
+  </div>
+</section>
+
+<!-- ========== TECHNICAL ========== -->
+<section id="technical">
+  <div class="section-head reveal">
+    <div class="chapter">Chapter 04 · Technical Prep</div>
+    <h2 class="display">Practice patterns, <em>not problems.</em></h2>
+    <p class="lede">There are roughly 15 algorithmic patterns that appear in 90% of internship interviews. Recognizing the pattern is most of the battle. Memorizing 300 LeetCode problems is mostly a waste — pattern fluency is the actual skill.</p>
+  </div>
+
+  <div class="two-col reveal">
+    <div>
+      <h3>The patterns that matter</h3>
+      <p>Two pointers. Sliding window. Fast/slow pointers. Merge intervals. Cyclic sort. Tree BFS. Tree DFS. Topological sort. Modified binary search. Top-K elements. K-way merge. 0/1 knapsack DP. Unbounded knapsack DP. Longest common subsequence. Bitwise XOR.</p>
+      <p>Pick a pattern. Solve five problems in it back-to-back. Then move on. Coming back the next week? Solve two more. <em>Spaced repetition beats cramming.</em></p>
+    </div>
+    <div>
+      <h3>The 30-day plan</h3>
+      <p><strong>Week 1:</strong> Arrays, strings, hash maps. Easy and medium only. Goal: speed and pattern recognition. Around 25 problems.</p>
+      <p><strong>Week 2:</strong> Trees, graphs, recursion. Bias toward medium. Around 20 problems. Get comfortable drawing them out.</p>
+      <p><strong>Week 3:</strong> Dynamic programming and backtracking. The dreaded ones. Pace down to 10–15 problems but actually understand each.</p>
+      <p><strong>Week 4:</strong> Mock interviews. Solve out loud. Time yourself. The communication is what the interviewer is grading — not the solution.</p>
+    </div>
+  </div>
+
+  <div class="dodont reveal">
+    <div class="do">
+      <h4>While solving</h4>
+      <ul>
+        <li>Restate the problem in your own words before writing code.</li>
+        <li>Walk through a small concrete example by hand.</li>
+        <li>Brute force first. Then optimize. Always.</li>
+        <li>State your time and space complexity unprompted.</li>
+        <li>Think out loud — silence is the killer.</li>
+        <li>Test with edge cases: empty input, one element, duplicates, overflow.</li>
+      </ul>
+    </div>
+    <div class="dont">
+      <h4>Watch out for</h4>
+      <ul>
+        <li>Don't dive into code in the first 60 seconds. The interviewer wants to see thinking.</li>
+        <li>Don't get attached to your first idea. If it's not working, say so out loud and pivot.</li>
+        <li>Don't claim "O(n)" until you've actually traced it. Wrong complexity is worse than slow code.</li>
+        <li>Don't optimize what doesn't need optimizing. Premature optimization is also a red flag.</li>
+        <li>Don't let silence stretch past 20 seconds without narrating where you're stuck.</li>
+        <li>Don't argue with the interviewer. Ask, clarify, agree, move on.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BIG-O MATCHER GAME -->
+  <div class="game-frame reveal">
+    <div class="game-header">
+      <div class="title">GAME · BIG-O MATCHER</div>
+      <div class="meta">Click an algorithm, click its complexity</div>
+    </div>
+    <div class="bigo-game" id="bigo-game">
+      <div class="bigo-board">
+        <div class="bigo-col">
+          <h5>Algorithm</h5>
+          <div id="bigo-algos"></div>
+        </div>
+        <div class="bigo-col">
+          <h5>Time complexity</h5>
+          <div id="bigo-comps"></div>
+        </div>
+      </div>
+      <div class="bigo-status">
+        <span class="count" id="bigo-count">0</span> of 6 matched
+        <span style="margin-left: 24px; color: var(--muted);" id="bigo-message">Click an algorithm to begin</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== BEHAVIORAL ========== -->
+<section id="behavioral">
+  <div class="section-head reveal">
+    <div class="chapter">Chapter 05 · Behavioral</div>
+    <h2 class="display">Stories beat <em>adjectives.</em> Always.</h2>
+    <p class="lede">"Tell me about a time..." is not small talk. It's the most predictive part of the interview. Companies use behavioral signal to figure out whether you'll be miserable to work with — which costs them more than a technically weaker hire.</p>
+  </div>
+
+  <div class="two-col reveal">
+    <div>
+      <h3>STAR is real and works</h3>
+      <p><strong>Situation.</strong> One sentence of setup. What was happening? Don't ramble — get to the action fast.</p>
+      <p><strong>Task.</strong> What were you specifically responsible for? Make it personal: "I" not "we."</p>
+      <p><strong>Action.</strong> The longest part. What did you do? Be specific about the steps you took, the decisions you made, and the trade-offs you considered.</p>
+      <p><strong>Result.</strong> What happened? Numbers if you have them. Lesson learned counts too — interviewers love self-awareness more than perfect outcomes.</p>
+    </div>
+    <div>
+      <h3>The questions you'll get</h3>
+      <p><strong>Tell me about yourself.</strong> A 90-second arc, not your résumé read aloud. Where you started, what hooked you, what you're working on now.</p>
+      <p><strong>Tell me about a time you failed.</strong> Pick a real one. Vulnerability + lesson. "My biggest weakness is perfectionism" is a weakness — being self-aware enough to dodge cliché.</p>
+      <p><strong>Why this company?</strong> Specific, not generic. Mention a product detail, a team blog post, an engineer's talk. Show you did the homework.</p>
+      <p><strong>Tell me about a conflict.</strong> They want to see how you disagree. Pick a peer disagreement, not a boss one. Describe the resolution, not who was "right."</p>
+    </div>
+  </div>
+
+  <!-- STAR BUILDER -->
+  <div class="game-frame reveal">
+    <div class="game-header">
+      <div class="title">TOOL · STAR BUILDER</div>
+      <div class="meta">Live preview as you type</div>
+    </div>
+    <div class="star-builder">
+      <div class="star-fields">
+        <div class="star-field">
+          <label><span class="letter">S</span>SITUATION <span class="hint">(1 sentence of context)</span></label>
+          <textarea id="star-s" placeholder="During my CS senior project, our team of four was building a real-time game with a 3-week deadline..."></textarea>
+        </div>
+        <div class="star-field">
+          <label><span class="letter">T</span>TASK <span class="hint">(your specific responsibility)</span></label>
+          <textarea id="star-t" placeholder="I was responsible for the multiplayer sync layer, which kept de-syncing under 4+ players..."></textarea>
+        </div>
+        <div class="star-field">
+          <label><span class="letter">A</span>ACTION <span class="hint">(the steps you took, in detail)</span></label>
+          <textarea id="star-a" placeholder="I instrumented the websocket layer, found that we were broadcasting full state instead of deltas, refactored the message protocol to send only changes, and added client-side reconciliation..."></textarea>
+        </div>
+        <div class="star-field">
+          <label><span class="letter">R</span>RESULT <span class="hint">(outcome — bonus points for numbers)</span></label>
+          <textarea id="star-r" placeholder="Bandwidth dropped 70% and we shipped on time. We learned to instrument before optimizing — I now do that on every project."></textarea>
+        </div>
+      </div>
+      <div class="star-meter">
+        <span>Story strength</span>
+        <div class="bar"><div class="bar-fill" id="star-fill"></div></div>
+        <span id="star-percent">0%</span>
+      </div>
+      <div class="star-output" id="star-output">
+        <span class="empty">Your STAR answer will appear here as you type. The rule of thumb: a good behavioral answer runs 60–90 seconds when spoken aloud.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== OFFER ========== -->
+<section id="offer">
+  <div class="section-head reveal">
+    <div class="chapter">Chapter 06 · The Offer</div>
+    <h2 class="display">An offer is the start <em>of a negotiation,</em> not the end.</h2>
+    <p class="lede">Saying yes within five minutes of getting an offer is the single most expensive thing you can do — for both money and learning. Slow down. Evaluate. Counter, sometimes. Decline, gracefully.</p>
+  </div>
+
+  <div class="two-col reveal">
+    <div>
+      <h3>How to evaluate</h3>
+      <p><strong>The team.</strong> Who is your manager? Who would you ship with? Ask to talk to them before signing. Any company that refuses is telling you something.</p>
+      <p><strong>The work.</strong> Is it real? "You'll work on the platform" is vague to the point of being a warning. Ask: "What would my first project look like?"</p>
+      <p><strong>The growth.</strong> Do interns get mentorship? Do they own real shipped work? How many return offers did the previous cohort get?</p>
+      <p><strong>The compensation.</strong> Hourly rate, housing stipend, relocation, signing bonus. Compare against levels.fyi for the role and city.</p>
+    </div>
+    <div>
+      <h3>How to negotiate (yes, even as an intern)</h3>
+      <p>Negotiation is not aggressive. It is expected. Recruiters factor a counter into their offer math — most have 5–15% of room.</p>
+      <p>Wait until you have the offer in writing. Then say something like the script in the next box.</p>
+      <p>Don't lie about competing offers. Do mention them if real. "I'm comparing this with [other co.] which came in at $X" is a complete and reasonable sentence.</p>
+      <p>If they say no, ask if there's flexibility on signing bonus, housing, or start date. Often there is.</p>
+    </div>
+  </div>
+
+  <div class="neg-script reveal">
+    <p><span class="role">YOU:</span> Thank you so much for the offer — I'm genuinely excited about the team. Before I accept, I want to make sure I understand the package fully. Is there any flexibility on the hourly rate or signing bonus?</p>
+    <p><span class="role">RECRUITER:</span> Let me check with the hiring team. What number were you thinking?</p>
+    <p><span class="role">YOU:</span> Based on what I've seen for similar roles, I was hoping we could get to [a specific number, 10–15% above the offer]. I'd be ready to sign at that level today.</p>
+    <p><span class="role">— silence is fine here. Do not fill it. —</span></p>
+  </div>
+
+  <!-- RED FLAG GAME -->
+  <div class="game-frame reveal">
+    <div class="game-header">
+      <div class="title">GAME · RED FLAG DETECTOR</div>
+      <div class="meta">Click words/phrases that are warning signs</div>
+    </div>
+    <div class="rf-game">
+      <div class="rf-jd">
+        <h4>Software Engineering Intern</h4>
+        <div class="company">VeloxPath Solutions · "Hybrid" · Posted 3 days ago</div>
+
+        <p>VeloxPath is looking for a <span class="clickable" data-flag="red" data-reason="'Rockstar' is recruiter-speak that almost always signals chaotic teams, vague expectations, and overwork.">rockstar intern</span> to join our <span class="clickable" data-flag="red" data-reason="'Family' is a top warning sign — companies that say this often expect personal sacrifice in place of compensation.">family</span> for an exciting summer. We're a fast-paced startup looking for someone who is <span class="clickable" data-flag="red" data-reason="Code for: we will work you 60+ hours and call it culture.">willing to wear many hats</span> and thrives in <span class="clickable" data-flag="red" data-reason="Translation: no documentation, no onboarding, no senior engineers to learn from.">a high-velocity environment with minimal hand-holding</span>.</p>
+
+        <p>You'll work on cutting-edge projects with our founders and report directly to the CEO. The role is <span class="clickable" data-flag="green" data-reason="Hybrid with clear expectations is fine — flexibility is a real perk when defined.">hybrid (2 days in office)</span> in Austin, TX.</p>
+
+        <p>Compensation: This is an <span class="clickable" data-flag="red" data-reason="Unpaid 'for-credit' tech internships are illegal in most cases under FLSA. Run.">unpaid internship for credit</span>, but you'll gain <span class="clickable" data-flag="red" data-reason="Exposure does not pay rent. This is a meme for a reason.">invaluable exposure</span> and a chance to <span class="clickable" data-flag="red" data-reason="If you're 'building a product from scratch' as an intern with no senior eng support, you are unpaid labor wearing a 'learning experience' hat.">build a product from scratch</span>.</p>
+
+        <p>Requirements: Currently pursuing a CS degree, <span class="clickable" data-flag="green" data-reason="Concrete tech requirements are fine — they tell you what you'll actually be doing.">familiarity with React and Node.js</span>, and the <span class="clickable" data-flag="red" data-reason="'Hustle mentality' is a polite way of saying 'we will burn you out.'">hustle mentality to grind through tough problems</span>.</p>
+
+        <p><span class="clickable" data-flag="green" data-reason="Real internships have real mentors. This is what you want to see.">You'll be paired with a senior engineer mentor</span> for weekly 1:1s — wait, actually, we're working on staffing that.</p>
+
+      </div>
+      <div class="rf-controls">
+        <div class="stats">
+          <span>Flagged: <b id="rf-flagged">0</b></span>
+          <span>Red flags found: <b id="rf-found">0</b>/<b id="rf-total">7</b></span>
+        </div>
+        <button class="rf-btn" onclick="finishRedFlags()">Reveal answers</button>
+      </div>
+      <div class="rf-result" id="rf-result"></div>
+    </div>
+  </div>
+
+  <div class="pullquote reveal">
+    <q>The best internship is the one where you ship something real, get reviewed by smarter people, and leave better than you arrived.</q>
+  </div>
+</section>
+
+<!-- ========== RESOURCE LIBRARY ========== -->
+<section id="resources" class="resource-section" aria-labelledby="resources-h">
+  <div class="section-head reveal">
+    <div class="chapter">Part III · The Resource Library</div>
+    <h2 class="display" id="resources-h">Six resources, <em>annotated.</em></h2>
+    <p class="lede">The resources below are the ones experienced applicants return to year after year. Each annotation answers four questions in order: what the resource is, what is in it, why it matters specifically for a Penn State computing student applying to software engineering internships, and how to use it efficiently. Resources are presented in the order you should encounter them — the job-finding directory first, the offer-evaluation tools last.</p>
+  </div>
+
+  <div class="resource-list">
+
+    <!-- ===== RESOURCE 01 ===== -->
+    <article class="resource-card reveal" id="r-01">
+      <header class="resource-meta">
+        <div class="num">01</div>
+        <div class="category">Directory · Database</div>
+        <h3 class="resource-title">SimplifyJobs &amp; PittCSC Summer Internships</h3>
+        <a class="url" href="https://github.com/SimplifyJobs/Summer2026-Internships" target="_blank" rel="noopener">github.com/SimplifyJobs/Summer2026-Internships</a>
+        <div class="access">Free · GitHub account optional</div>
+      </header>
+      <div class="resource-body">
+        <h4>What is this?</h4>
+        <p>A community-maintained, crowdsourced GitHub repository that lists every active United States, Canadian, and remote tech internship for the upcoming summer cycle. The list was originally launched by the Pitt Computer Science Club (PittCSC) and is now co-maintained with the team behind the application-tracker tool Simplify.jobs. As of this writing the repository has approximately 44,000 stars and is updated multiple times each day.</p>
+
+        <h4>What is in it?</h4>
+        <p>The repository's core artifact is a single, very long Markdown table updated daily. Each row records a company name, role title, location (or remote), application link, and the date the posting was added. Postings are tagged with status icons that matter to applicants: 🛂 indicates that the company will not sponsor international students, 🇺🇸 indicates U.S. citizenship is required, and 🔒 indicates a posting that has closed. The summer roles live in the main README; a parallel <em>Off-Season README</em> lists fall, winter, and spring co-op postings that most students never see. Coverage spans software engineering, product management, quant trading, machine learning and AI, hardware, and data engineering.</p>
+
+        <h4>Why it matters for this audience.</h4>
+        <p>For a Penn State computing student, this is the single most important link in the entire guide. Compared to LinkedIn or Indeed — which surface postings ranked by recruiter spend, not by date — this repository sorts by date posted. The first 24 to 48 hours after a posting goes live are when conversion rates are highest, because most large-employer applicant tracking systems use rolling review. Watching this repository is the practical mechanism that lets a student act inside that window. The off-season README is also disproportionately valuable for HCDD and IST students, because Pittsburgh- and Philadelphia-based employers concentrate fall and winter co-op postings there.</p>
+
+        <h4>Tips for efficient use.</h4>
+        <ul>
+          <li>The repository is renamed each cycle (Summer2024 → Summer2025 → Summer2026 → Summer2027). When the cycle turns over each summer, search GitHub for "SimplifyJobs Summer-Internships" rather than bookmarking a specific year.</li>
+          <li>Click the GitHub <em>Watch → Custom → Releases</em> setting and the repository's email-alert mirrors so new postings reach you the same day they land.</li>
+          <li>Trust the date column over the 🔒 closed tag. Companies sometimes reopen postings late in the cycle, and the closed tag lags by several days.</li>
+          <li>If a posting interests you, open the company's career page directly rather than going through the repository's referral link. The repository is excellent at discovery; the company page is the canonical application surface.</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- ===== RESOURCE 02 ===== -->
+    <article class="resource-card reveal" id="r-02">
+      <header class="resource-meta">
+        <div class="num">02</div>
+        <div class="category">Database · Professional Portal</div>
+        <h3 class="resource-title">Levels.fyi</h3>
+        <a class="url" href="https://www.levels.fyi/internships/" target="_blank" rel="noopener">levels.fyi/internships</a>
+        <div class="access">Free with optional account · paid coaching tier</div>
+      </header>
+      <div class="resource-body">
+        <h4>What is this?</h4>
+        <p>Levels.fyi is a crowdsourced compensation database that aggregates self-reported salary, equity, and total compensation data for software roles at thousands of technology companies. It was originally built to expose the leveling system at Google and Facebook and has expanded into the most comprehensive public compensation reference in the industry.</p>
+
+        <h4>What is in it?</h4>
+        <p>The site contains four main artifacts that matter for an internship applicant. First, an internship-specific salary table indexed by company, year, and location, with hourly rate, monthly stipend, housing assistance, and relocation broken out separately. Second, per-company "leveling maps" that translate ladder positions across employers — knowing that an L4 at Google maps to an E4 at Meta and an SDE II at Amazon helps you read job descriptions correctly. Third, an interview question bank organized by company. Fourth, a salary calculator that adjusts for cost of living across U.S. cities, useful for comparing a New York offer against a Seattle offer against a remote one.</p>
+
+        <h4>Why it matters for this audience.</h4>
+        <p>Internship compensation varies more dramatically than students expect. A Google SWE intern earns roughly eleven thousand dollars per month including housing; a regional bank intern earns twenty-five dollars per hour with no housing. A job posting will rarely tell you which is which until late in the interview process. Levels.fyi lets you check before you invest the time. Once an offer arrives, the same data gives you a defensible counter-offer — a number anchored in publicly verifiable medians is much harder for a recruiter to dismiss than a feeling.</p>
+
+        <h4>Tips for efficient use.</h4>
+        <ul>
+          <li>Filter the intern table by year. Intern compensation has risen substantially since 2021, and older entries underrepresent current market rates.</li>
+          <li>Look at the 25th, 50th, and 75th percentile bands rather than only the median. Recruiters reference these same bands internally.</li>
+          <li>Cross-check Levels data against Reddit and Blind for posting-level recency. Levels has more total coverage; the forums have faster updates after market shifts.</li>
+          <li>The paid negotiation coaching service is most useful at the new-grad and senior levels. For an internship, the free content covers the entire negotiation lifecycle adequately.</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- ===== RESOURCE 03 ===== -->
+    <article class="resource-card reveal" id="r-03">
+      <header class="resource-meta">
+        <div class="num">03</div>
+        <div class="category">Subject Guide · Handbook</div>
+        <h3 class="resource-title">NeetCode</h3>
+        <a class="url" href="https://neetcode.io" target="_blank" rel="noopener">neetcode.io</a>
+        <div class="access">Free core content · paid courses optional</div>
+      </header>
+      <div class="resource-body">
+        <h4>What is this?</h4>
+        <p>NeetCode is a free, pattern-based technical interview preparation platform built by an ex-Google software engineer. It is organized around two curated problem lists — the NeetCode 75 (foundational) and the NeetCode 150 (comprehensive) — that distill the universe of LeetCode problems into the small set most likely to appear in a real internship technical screen.</p>
+
+        <h4>What is in it?</h4>
+        <p>The site's core artifact is the NeetCode 150: 150 hand-picked LeetCode problems organized by algorithmic pattern (Arrays and Hashing, Two Pointers, Sliding Window, Stack, Binary Search, Linked List, Trees, Tries, Heap and Priority Queue, Backtracking, Graphs, Advanced Graphs, 1-Dimensional Dynamic Programming, 2-Dimensional Dynamic Programming, Greedy, Intervals, Math and Geometry, Bit Manipulation). Each problem includes a written solution, a video walkthrough on YouTube, working code in Python, Java, C++, and JavaScript, and a difficulty tag (easy, medium, or hard). The site also hosts a free system design primer, a behavioral-interview guide, and (in the paid tier) longer mock-interview courses.</p>
+
+        <h4>Why it matters for this audience.</h4>
+        <p>Most internship technical screens pull from approximately fifteen recurring algorithmic patterns. NeetCode lets you study patterns rather than grind random problems, which is the dominant difference between candidates who pass screens and candidates who do not. Compared to a paid LeetCode subscription, NeetCode is free, language-agnostic, and explanation-rich — three properties that matter when you are balancing internship preparation against a full senior-year course load. For an HCDD or IST student whose curriculum touched algorithms only briefly, NeetCode also functions as a remedial textbook in addition to an interview prep tool.</p>
+
+        <h4>Tips for efficient use.</h4>
+        <ul>
+          <li>Begin with the NeetCode 75 (the Blind 75 list) before attempting the 150. The 75 is sufficient preparation for most non-FAANG technical screens.</li>
+          <li>Watch the video solution only after you have attempted the problem yourself for at least twenty minutes. The video before the attempt teaches you what the answer looks like; the video after teaches you why your approach failed.</li>
+          <li>Tackle problems in order of difficulty (easy, then medium, then hard) rather than by topic. Pattern recognition transfers across categories better than memorization within a single category.</li>
+          <li>Maintain a "missed problems" log and revisit it on a spaced-repetition schedule (one day, three days, one week, one month). Repetition is the actual learning mechanism, not the first attempt.</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- ===== RESOURCE 04 ===== -->
+    <article class="resource-card reveal" id="r-04">
+      <header class="resource-meta">
+        <div class="num">04</div>
+        <div class="category">Discussion Group</div>
+        <h3 class="resource-title">r/cscareerquestions (Reddit)</h3>
+        <a class="url" href="https://www.reddit.com/r/cscareerquestions/" target="_blank" rel="noopener">reddit.com/r/cscareerquestions</a>
+        <div class="access">Free · Reddit account required to post</div>
+      </header>
+      <div class="resource-body">
+        <h4>What is this?</h4>
+        <p>r/cscareerquestions is a long-running Reddit community of more than one million members focused on career questions, interview experiences, salary discussions, and internship advice for software engineers and computing students. It functions as the most active general-purpose discussion forum for the early-career end of the software industry.</p>
+
+        <h4>What is in it?</h4>
+        <p>The community publishes daily threads on internship offers, rejections, technical screen experiences, return-offer decisions, and negotiation tactics. Several recurring posts run on a weekly schedule: a "Daily Chat Thread" for low-stakes questions, a "Big N Discussion" for FAANG-tier company specifics, and a "Resume Advice Thread" for peer review. The community wiki contains a sticky "Salary Sharing Survey" with thousands of recent intern offers searchable by company and year, plus FAQ pages on résumé writing, interview preparation, and offer evaluation. Participation skews United States, with active threads on Canadian, European, and remote roles.</p>
+
+        <h4>Why it matters for this audience.</h4>
+        <p>The community has three concrete uses for an internship applicant. First, when a recruiter goes silent for three weeks, searching the subreddit for "[Company name] timeline 2026" will typically surface a dozen recent applicants who reported when they heard back, what their interview loop looked like, and what questions came up. Second, the salary survey supplements Levels.fyi with more recent data, particularly for smaller companies that Levels under-covers. Third, threads filtered to specific schools — including Penn State — give you a calibrated picture of what your peers' application volumes and outcomes actually look like, which makes it easier to interpret your own results.</p>
+
+        <h4>Tips for efficient use.</h4>
+        <ul>
+          <li>Use Reddit's search with a year qualifier (for example, <em>"site:reddit.com/r/cscareerquestions Google intern timeline 2026"</em>) to filter out outdated posts. Threads about 2019 hiring are not informative in 2026.</li>
+          <li>Apply heavy skepticism to top-voted posts. Survivorship bias is real, and the loudest voices tend to be the most extreme outcomes — FAANG offers and total rejections — which are not the typical applicant experience.</li>
+          <li>The highest-signal content is in the comments under technical-screen recap posts, not in the original posts themselves. Sort comments by "Top" rather than "Best."</li>
+          <li>Resist the instinct to ask "should I apply to X?" before searching. The answer is almost always already in the archive, and the search is faster than waiting for replies.</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- ===== RESOURCE 05 ===== -->
+    <article class="resource-card reveal" id="r-05">
+      <header class="resource-meta">
+        <div class="num">05</div>
+        <div class="category">Institutional Resource</div>
+        <h3 class="resource-title">Penn State Career Services &amp; Nittany Lion Careers</h3>
+        <a class="url" href="https://studentaffairs.psu.edu/career" target="_blank" rel="noopener">studentaffairs.psu.edu/career</a>
+        <a class="url" href="https://psu-csm.symplicity.com/students/" target="_blank" rel="noopener">Nittany Lion Careers (PSU login required)</a>
+        <div class="access">Free for current students and alumni · PSU credentials required for NLC</div>
+      </header>
+      <div class="resource-body">
+        <h4>What is this?</h4>
+        <p>Penn State Career Services is the university's centralized career office, headquartered at 101 Bank of America Career Services Building on the University Park campus. Nittany Lion Careers (NLC) is the office's single-system recruiting platform, used by every Penn State campus and college. Together they constitute the institutional resource available to every Penn State student.</p>
+
+        <h4>What is in it?</h4>
+        <p>Career Services itself offers one-on-one career counseling appointments, walk-in résumé reviews, mock technical and behavioral interviews, the Focus*2 self-assessment, employer information sessions, and major-specific career fairs (the Spring Career Days fair is the largest in the College of IST and the College of Engineering). Nittany Lion Careers itself is a job board carrying internships and full-time roles posted directly by employers, with each listing reviewed by Career Services staff before going live. NLC supports filtering by major, academic college, position type, and on-campus interview eligibility, plus saved searches with email alerts.</p>
+
+        <h4>Why it matters for this audience.</h4>
+        <p>This resource has two non-obvious uses. First, certain regional employers — defense contractors, mid-sized Pennsylvania technology firms, and financial firms with offices in Pittsburgh and Philadelphia — recruit Penn State students <em>only</em> through NLC. These employers do not post on Simplify, LinkedIn, or any of the public aggregators. Skipping NLC means skipping these companies entirely, which is a meaningful loss for any student open to working in the Mid-Atlantic. Second, the résumé review staff are familiar with what HCDD, IST, and Engineering students typically present and can flag the major-specific weaknesses that more general advice misses.</p>
+
+        <h4>Tips for efficient use.</h4>
+        <ul>
+          <li>Schedule a résumé review appointment three weeks before the September career fair, not the day before. The mid-September slots fill within hours of opening.</li>
+          <li>For HCDD-specific career counseling, ask explicitly to be matched with the IST-affiliated counselor. The College of IST maintains its own career staff in addition to the central office.</li>
+          <li>Use the NLC <em>Saved Searches</em> feature with email alerts. The platform's search interface is clunky enough that students who do not configure alerts tend to forget about it entirely.</li>
+          <li>The Bank of America Career Services Building runs free professional headshot days each semester. The twenty-minute appointment is worth scheduling — your LinkedIn profile photo influences recruiter response rates measurably.</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- ===== RESOURCE 06 ===== -->
+    <article class="resource-card reveal" id="r-06">
+      <header class="resource-meta">
+        <div class="num">06</div>
+        <div class="category">Professional Journal · Newsletter</div>
+        <h3 class="resource-title">The Pragmatic Engineer</h3>
+        <a class="url" href="https://www.pragmaticengineer.com" target="_blank" rel="noopener">pragmaticengineer.com</a>
+        <div class="access">Free tier ~2 articles per month · paid tier ~$15/month with student discount</div>
+      </header>
+      <div class="resource-body">
+        <h4>What is this?</h4>
+        <p>The Pragmatic Engineer is a weekly newsletter and blog written by Gergely Orosz, a former engineering manager at Uber and Skype. Its subject is software engineering as a profession — hiring practices, performance review cycles, layoffs, compensation structures, and the operational reality of working at large technology companies. It has approximately one million readers and is widely cited inside the industry.</p>
+
+        <h4>What is in it?</h4>
+        <p>The newsletter publishes investigative essays on layoff cycles, hiring freezes, and recruiting practices at FAANG and tier-2 companies; deep dives on engineering levels, performance review cycles, and compensation structures; interviews with engineering leaders about what they look for in candidates; and a recurring series, "The Trimodal Nature of Software Engineering Salaries," that explains why pay varies so dramatically across companies. The free tier publishes approximately two articles per month. The paid tier publishes four to six longer pieces and includes archived deep dives on specific companies' interview processes — Google, Meta, Stripe, Amazon, and others.</p>
+
+        <h4>Why it matters for this audience.</h4>
+        <p>An internship search becomes more strategic when you understand what is happening at the layer above — which companies are quietly hiring, which are in a stealth freeze, which are about to lay off, which are restructuring their intern programs. The Pragmatic Engineer is the most consistent source of that signal in the industry. For a student, the practical value is calibration: knowing that a "lukewarm response" from a recruiter reflects a market-wide hiring slowdown rather than something specific to you saves weeks of self-doubt and prevents avoidable strategic mistakes (such as continuing to apply to a company that has frozen all early-career hiring).</p>
+
+        <h4>Tips for efficient use.</h4>
+        <ul>
+          <li>The free tier is sufficient for an undergraduate audience. Subscribe with a personal email address; university email systems often filter newsletters into a Promotions folder you will not check.</li>
+          <li>Search the archive for "intern" before applying broadly. Orosz has written specifically on intern hiring practices at Meta, Google, and several smaller companies, and those pieces are more actionable than the general-audience essays.</li>
+          <li>Pair this newsletter with one technical newsletter (for example, High Growth Engineer or Engineer's Codex). Career reading without technical reading is incomplete.</li>
+          <li>Bookmark the "Software engineer compensation" tag. It becomes the most useful section of the archive when you are negotiating an offer in late spring.</li>
+        </ul>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+</main>
+
+<footer>
+  <div class="inner">
+    <div class="big">
+      Now go <em>apply.</em>
+    </div>
+
+    <div class="cols">
+      <div>
+        <div class="col-title">The Six Resources</div>
+        <ul>
+          <li><a href="#r-01" style="color:inherit;">01 · SimplifyJobs Internships</a></li>
+          <li><a href="#r-02" style="color:inherit;">02 · Levels.fyi</a></li>
+          <li><a href="#r-03" style="color:inherit;">03 · NeetCode</a></li>
+          <li><a href="#r-04" style="color:inherit;">04 · r/cscareerquestions</a></li>
+          <li><a href="#r-05" style="color:inherit;">05 · Penn State Career Services</a></li>
+          <li><a href="#r-06" style="color:inherit;">06 · The Pragmatic Engineer</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="col-title">Penn State Support</div>
+        <ul>
+          <li>Career Services · Bank of America Career Services Building</li>
+          <li>566 Eisenhower Rd, University Park, PA 16802</li>
+          <li>(814) 865-2377 · askcs@psu.edu</li>
+          <li>Mon–Fri · 8:00 a.m.–5:00 p.m.</li>
+          <li>College of IST career advising · ist.psu.edu</li>
+        </ul>
+      </div>
+      <div>
+        <div class="col-title">Connect with Others</div>
+        <ul>
+          <li>PSU CS Club · Slack and weekly meetings</li>
+          <li>WICS · Women in Computer Science</li>
+          <li>HackPSU · annual hackathon</li>
+          <li>HCDD program peer cohort</li>
+          <li>r/cscareerquestions weekly threads</li>
+        </ul>
+      </div>
+      <div>
+        <div class="col-title">When stuck</div>
+        <ul>
+          <li>Talk to a senior friend</li>
+          <li>Get sleep, not more LeetCode</li>
+          <li>Apply to one more thing</li>
+          <li>Send one cold email</li>
+          <li>Walk in to Career Services</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="copy">
+      <span>The Intern Handbook · Vol. 01 · 2026 · A specialist-to-specialist resource guide</span>
+      <span>Designed for accessibility · WCAG 2.1 AA</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   REVEAL ON SCROLL
+============================================================ */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal, .timeline-wrap').forEach(el => observer.observe(el));
+
+/* ============================================================
+   GAME 1: BULLET BATTLE
+============================================================ */
+const bbRounds = [
+  {
+    prompt: "Round 1 — for a frontend internship, which bullet survives the scan?",
+    options: [
+      { text: "Worked on the company website using HTML, CSS, and JavaScript. Helped with various tasks as needed.", correct: false, why: "Vague verb ('worked on'), no specifics, no measurable result. 'Helped' is the recruiter-skip-word of the century." },
+      { text: "Shipped a redesigned checkout flow in React + TypeScript that lifted conversion 12% and reduced support tickets by ~30%.", correct: true, why: "Strong verb. Specific tech. Two measurable outcomes. This bullet earns its rent on the page." }
+    ]
+  },
+  {
+    prompt: "Round 2 — for a backend role, which one wins?",
+    options: [
+      { text: "Built a Node.js API for an internal tool. Used Express and PostgreSQL.", correct: false, why: "Tools listed, but no scope, no scale, no result. Could describe a weekend project or a year of work — recruiter has no signal." },
+      { text: "Designed and shipped a REST API in Node/Express handling 50K req/day with sub-100ms p99 latency, serving 8 internal teams.", correct: true, why: "Scale ('50K req/day'), performance ('sub-100ms p99'), reach ('8 teams'). Three concrete signals in one sentence." }
+    ]
+  },
+  {
+    prompt: "Round 3 — for a project section bullet, which is stronger?",
+    options: [
+      { text: "Created a CTF platform from scratch with a custom Docker-based virtual terminal system, used by 4,000+ students across 12 universities.", correct: true, why: "Scope ('from scratch'), specific tech ('Docker-based'), and reach numbers ('4,000+ students, 12 universities'). Recruiter knows exactly what you built." },
+      { text: "Made a website for cybersecurity learning with various features and tools for users to practice on.", correct: false, why: "'Various' is a tell. 'Made a website' tells the recruiter nothing specific. No tech, no scale, no outcome." }
+    ]
+  },
+  {
+    prompt: "Round 4 — for a research/internship bullet, which one?",
+    options: [
+      { text: "Did research on graph theory at the university. Worked with my professor and learned a lot.", correct: false, why: "Soft verbs, no detail on the actual work, no output. 'Learned a lot' is implied by the act of doing research — don't waste the line." },
+      { text: "Researched edge-gathering numbers in disconnected graphs under Prof. [X]; implemented analysis in NetworkX and contributed to a pre-print accepted at [conf].", correct: true, why: "Specific topic, named tooling, concrete output (a paper). Anyone scanning knows immediately this was real research." }
+    ]
+  },
+  {
+    prompt: "Round 5 — final round. Which leadership/non-tech bullet is better?",
+    options: [
+      { text: "Led a hackathon team to first place — built a QR check-in system in 24h that processed 800+ attendees with zero downtime.", correct: true, why: "Outcome ('first place'), constraint ('24h'), scale ('800+ attendees'), reliability ('zero downtime'). Even non-CS readers can grade this." },
+      { text: "Participated in a hackathon and worked on the team. We did well and the project was successful.", correct: false, why: "Every word is a placeholder. 'Participated.' 'Did well.' 'Successful.' This is what a résumé looks like before you've revised it." }
+    ]
+  }
+];
+
+let bbIndex = 0;
+let bbScore = 0;
+
+function renderBB() {
+  const round = bbRounds[bbIndex];
+  document.getElementById('bb-prompt').textContent = round.prompt;
+  const opts = document.getElementById('bb-options');
+  opts.innerHTML = '';
+  // Randomize order of A/B per round so people can't pattern-match position
+  const shuffled = Math.random() > 0.5 ? round.options : [round.options[1], round.options[0]];
+  shuffled.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'bb-option';
+    btn.innerHTML = `<span class="label">Option ${String.fromCharCode(65+i)}</span>${opt.text}`;
+    btn.onclick = () => answerBB(opt, btn);
+    opts.appendChild(btn);
+  });
+  document.getElementById('bb-feedback').classList.remove('show');
+  // Update progress dots
+  const dots = document.querySelectorAll('#bb-progress .dot');
+  dots.forEach((d, i) => {
+    d.className = 'dot';
+    if (i < bbIndex) d.classList.add('done');
+    if (i === bbIndex) d.classList.add('current');
+  });
+}
+
+function answerBB(opt, btn) {
+  const allBtns = document.querySelectorAll('.bb-option');
+  allBtns.forEach(b => b.style.pointerEvents = 'none');
+  if (opt.correct) {
+    bbScore++;
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    // also highlight the correct one
+    allBtns.forEach(b => {
+      if (b !== btn) b.classList.add('correct');
+    });
+  }
+  const fb = document.getElementById('bb-feedback');
+  fb.innerHTML = `<strong>${opt.correct ? '✓ Correct.' : '✗ The other bullet was stronger.'}</strong><br>${opt.why}<br><button class="next" onclick="nextBB()">${bbIndex < bbRounds.length-1 ? 'Next round →' : 'See score →'}</button>`;
+  fb.classList.add('show');
+  // Update current dot
+  const dots = document.querySelectorAll('#bb-progress .dot');
+  dots[bbIndex].classList.remove('current');
+  dots[bbIndex].classList.add(opt.correct ? 'done' : 'miss');
+}
+
+function nextBB() {
+  bbIndex++;
+  if (bbIndex >= bbRounds.length) {
+    document.getElementById('bb-body').style.display = 'none';
+    const final = document.getElementById('bb-final');
+    document.getElementById('bb-score').textContent = `${bbScore}/${bbRounds.length}`;
+    let grade = '', recap = '';
+    if (bbScore === 5) { grade = 'Recruiter pile: TOP'; recap = 'Five for five. You have a recruiter\'s eye. Now apply it to your own résumé — the line you wrote in 30 seconds before submitting is almost certainly the weakest bullet on the page.'; }
+    else if (bbScore >= 3) { grade = 'Recruiter pile: KEEP'; recap = 'Solid instincts. Go through your own résumé and rewrite anything starting with "Worked," "Helped," or "Was responsible for." Those are the dead-giveaway weak verbs.'; }
+    else { grade = 'Recruiter pile: REVISE'; recap = 'No shame — the patterns are learnable. Re-read the do/don\'t list above. The biggest fix: every bullet needs a verb at the start, a specific noun in the middle, and a number at the end whenever possible.'; }
+    document.getElementById('bb-grade').textContent = grade;
+    document.getElementById('bb-recap').textContent = recap;
+    final.classList.add('show');
+    return;
+  }
+  renderBB();
+}
+
+function resetBulletBattle() {
+  bbIndex = 0; bbScore = 0;
+  document.getElementById('bb-body').style.display = 'block';
+  document.getElementById('bb-final').classList.remove('show');
+  renderBB();
+}
+
+renderBB();
+
+/* ============================================================
+   GAME 2: BIG-O MATCHER
+============================================================ */
+const bigoData = [
+  { algo: "Linear search through unsorted array", complexity: "O(n)" },
+  { algo: "Binary search on sorted array", complexity: "O(log n)" },
+  { algo: "Nested loop comparing every pair", complexity: "O(n²)" },
+  { algo: "Hash map lookup (average case)", complexity: "O(1)" },
+  { algo: "Mergesort / quicksort average case", complexity: "O(n log n)" },
+  { algo: "Recursive Fibonacci (no memo)", complexity: "O(2ⁿ)" }
+];
+
+let bigoSelectedAlgo = null;
+let bigoSelectedComp = null;
+let bigoMatched = 0;
+
+function shuffle(arr) {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
+
+function renderBigO() {
+  const algosEl = document.getElementById('bigo-algos');
+  const compsEl = document.getElementById('bigo-comps');
+  algosEl.innerHTML = '';
+  compsEl.innerHTML = '';
+  shuffle(bigoData).forEach(item => {
+    const pill = document.createElement('div');
+    pill.className = 'bigo-pill';
+    pill.dataset.id = item.algo;
+    pill.innerHTML = item.algo;
+    pill.onclick = () => selectAlgo(pill, item.algo);
+    algosEl.appendChild(pill);
+  });
+  shuffle(bigoData).forEach(item => {
+    const pill = document.createElement('div');
+    pill.className = 'bigo-pill';
+    pill.dataset.id = item.algo;
+    pill.innerHTML = `<span class="complexity">${item.complexity}</span>`;
+    pill.onclick = () => selectComp(pill, item.algo);
+    compsEl.appendChild(pill);
+  });
+}
+
+function selectAlgo(el, id) {
+  if (el.classList.contains('matched')) return;
+  document.querySelectorAll('#bigo-algos .bigo-pill').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+  bigoSelectedAlgo = { el, id };
+  checkMatch();
+}
+
+function selectComp(el, id) {
+  if (el.classList.contains('matched')) return;
+  document.querySelectorAll('#bigo-comps .bigo-pill').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+  bigoSelectedComp = { el, id };
+  checkMatch();
+}
+
+function checkMatch() {
+  if (bigoSelectedAlgo && bigoSelectedComp) {
+    if (bigoSelectedAlgo.id === bigoSelectedComp.id) {
+      bigoSelectedAlgo.el.classList.remove('selected');
+      bigoSelectedComp.el.classList.remove('selected');
+      bigoSelectedAlgo.el.classList.add('matched');
+      bigoSelectedComp.el.classList.add('matched');
+      bigoMatched++;
+      document.getElementById('bigo-count').textContent = bigoMatched;
+      const msg = document.getElementById('bigo-message');
+      if (bigoMatched === bigoData.length) {
+        msg.textContent = "✓ All matched. The patterns are real — internalize the shapes, not the proofs.";
+        msg.style.color = 'var(--moss)';
+      } else {
+        const phrases = ['nice', 'matched', 'keep going', 'pattern locked'];
+        msg.textContent = phrases[Math.floor(Math.random()*phrases.length)] + ' →';
+      }
+    } else {
+      bigoSelectedAlgo.el.classList.add('shake');
+      bigoSelectedComp.el.classList.add('shake');
+      setTimeout(() => {
+        bigoSelectedAlgo.el.classList.remove('shake', 'selected');
+        bigoSelectedComp.el.classList.remove('shake', 'selected');
+        bigoSelectedAlgo = null;
+        bigoSelectedComp = null;
+      }, 400);
+      document.getElementById('bigo-message').textContent = '✗ not quite — try again';
+      document.getElementById('bigo-message').style.color = 'var(--vermillion)';
+      return;
+    }
+    bigoSelectedAlgo = null;
+    bigoSelectedComp = null;
+  }
+}
+
+renderBigO();
+
+/* ============================================================
+   STAR BUILDER (live preview + meter)
+============================================================ */
+const starInputs = ['s', 't', 'a', 'r'].map(k => document.getElementById('star-' + k));
+const starOut = document.getElementById('star-output');
+const starFill = document.getElementById('star-fill');
+const starPct = document.getElementById('star-percent');
+
+function updateStar() {
+  const [s, t, a, r] = starInputs.map(i => i.value.trim());
+  if (!s && !t && !a && !r) {
+    starOut.innerHTML = '<span class="empty">Your STAR answer will appear here as you type. The rule of thumb: a good behavioral answer runs 60–90 seconds when spoken aloud.</span>';
+    starFill.style.width = '0%';
+    starPct.textContent = '0%';
+    return;
+  }
+  let html = '';
+  if (s) html += `<span class="badge">S</span>${escapeHtml(s)}<br><br>`;
+  if (t) html += `<span class="badge">T</span>${escapeHtml(t)}<br><br>`;
+  if (a) html += `<span class="badge">A</span>${escapeHtml(a)}<br><br>`;
+  if (r) html += `<span class="badge">R</span>${escapeHtml(r)}`;
+  starOut.innerHTML = html;
+
+  // Strength heuristic: each section worth 25%, weighted by length
+  let pct = 0;
+  if (s.length > 30) pct += 20; else if (s.length > 0) pct += 10;
+  if (t.length > 30) pct += 20; else if (t.length > 0) pct += 10;
+  if (a.length > 80) pct += 35; else if (a.length > 30) pct += 20; else if (a.length > 0) pct += 10;
+  if (r.length > 30) pct += 25; else if (r.length > 0) pct += 12;
+  // Bonus: numbers in result
+  if (/\d/.test(r)) pct = Math.min(100, pct + 5);
+  starFill.style.width = pct + '%';
+  starPct.textContent = pct + '%';
+}
+
+function escapeHtml(str) {
+  return str.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+starInputs.forEach(i => i.addEventListener('input', updateStar));
+
+/* ============================================================
+   RED FLAG GAME
+============================================================ */
+const totalRedFlags = document.querySelectorAll('.rf-jd .clickable[data-flag="red"]').length;
+document.getElementById('rf-total').textContent = totalRedFlags;
+
+document.querySelectorAll('.rf-jd .clickable').forEach(el => {
+  el.addEventListener('click', () => {
+    if (document.getElementById('rf-result').classList.contains('show')) return;
+    el.classList.toggle('flagged');
+    updateRfStats();
+  });
+});
+
+function updateRfStats() {
+  const flagged = document.querySelectorAll('.rf-jd .clickable.flagged').length;
+  const correct = document.querySelectorAll('.rf-jd .clickable.flagged[data-flag="red"]').length;
+  document.getElementById('rf-flagged').textContent = flagged;
+  document.getElementById('rf-found').textContent = correct;
+}
+
+function finishRedFlags() {
+  const result = document.getElementById('rf-result');
+  if (result.classList.contains('show')) return;
+  let correct = 0, wrong = 0, missed = 0;
+  const findings = [];
+  document.querySelectorAll('.rf-jd .clickable').forEach(el => {
+    const isRed = el.dataset.flag === 'red';
+    const flagged = el.classList.contains('flagged');
+    if (isRed && flagged) {
+      correct++;
+      findings.push({ icon: '✓', text: `<strong>${el.textContent}</strong> — ${el.dataset.reason}` });
+    } else if (isRed && !flagged) {
+      missed++;
+      el.classList.add('missed');
+      findings.push({ icon: '✗', text: `<strong>missed:</strong> "${el.textContent}" — ${el.dataset.reason}` });
+    } else if (!isRed && flagged) {
+      wrong++;
+      el.classList.add('wrong');
+      findings.push({ icon: '!', text: `<strong>not actually a flag:</strong> "${el.textContent}" — ${el.dataset.reason}` });
+    }
+  });
+  let summary = '';
+  if (correct === totalRedFlags && wrong === 0) {
+    summary = `<h5>You spotted all ${totalRedFlags} red flags. ✓</h5><p>This is a real pattern — most "intern" job postings that talk about rockstars, families, hustle, and unpaid "exposure" are companies that don't yet know how to staff well. Pass.</p>`;
+  } else {
+    summary = `<h5>${correct} of ${totalRedFlags} flags found · ${wrong} false positives</h5><p>The ones to internalize: vague language ("various", "many hats", "wear all the hats"), emotional manipulation ("family", "hustle"), and unpaid work disguised as opportunity. Real listings sell the work, not the vibe.</p>`;
+  }
+  let list = '<ul>';
+  findings.forEach(f => { list += `<li data-icon="${f.icon}">${f.text}</li>`; });
+  list += '</ul>';
+  result.innerHTML = summary + list;
+  result.classList.add('show');
+}
+
+</script>
+</body>
+</html>
